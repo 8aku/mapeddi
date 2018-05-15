@@ -58,6 +58,7 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         }
         else if (MapEddi::currentlyAdding == FloatingTileStart)
         {
+            //change these default values to be editable
             addFloatingTile(p.x(), p.y(), MapEddi::selectedIndex, p.y(), 10);
             levelScene->update();
         }
@@ -90,9 +91,11 @@ void WorldView::addFloatingTile(int x, int y, int index, int floatHeight, int ma
     int snappedX = x - (x%snapToGrid);
     int snappedY = y - (y%snapToGrid);
 
-    FloatingTile *floatingTile = new FloatingTile(snappedX, snappedY, floatHeight, index, maxThrust, this);
+    FloatingTile *floatingTile = new FloatingTile(snappedX, snappedY, snappedY, index, maxThrust, this);
 
     levelScene->addItem(floatingTile);
+
+    floating_tile_list.push_front(floatingTile);
 }
 
 void WorldView::clearLevel()

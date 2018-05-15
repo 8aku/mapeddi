@@ -12,6 +12,9 @@ public:
     virtual ~FloatingTile();
     QRectF boundingRect() const;
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    int getFloatHeight();
+    int getIndex();
+    int getMaxThrust();
 
 private:
     int floatHeight;

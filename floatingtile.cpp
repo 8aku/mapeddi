@@ -39,9 +39,24 @@ void FloatingTile::paint (QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     QPen pen;
     pen.setWidth(1);
-    pen.setColor(QColor(0, 255, 100, 255));
+    pen.setColor(QColor(255, 0, 100, 255));
     painter->setPen(pen);
 
     QRectF cell (QRectF(getX(), floatHeight, getW(), getH()));
     painter->drawRect(cell);
+}
+
+int FloatingTile::getFloatHeight()
+{
+    return floatHeight;
+}
+
+int FloatingTile::getIndex()
+{
+    return index;
+}
+
+int FloatingTile::getMaxThrust()
+{
+    return maxThrust;
 }

@@ -13,6 +13,7 @@
 #include "mapeddi.h"
 #include "gameobject.h"
 #include "imagecontainer.h"
+#include "floatingtile.h"
 #include "tile.h"
 #include <iostream>
 #include <fstream>
@@ -85,6 +86,12 @@ void MainWindow::open()
                     worldView->addTile(input[1], input[2], input[3], input[4]);
                     input +=5;
                 }
+                else if (currentType == 3)
+                {
+                    worldView->addFloatingTile(input[1], input[2], input[3], input[4], input[5]);
+
+                    input +=6;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -132,6 +139,16 @@ void MainWindow::save()
             out << (*tile)->getY();
             out << (*tile)->getTileIndex();
             out << (int)(*tile)->isSolid();
+        }
+
+        for (auto tile = worldView->floating_tile_list.begin(); tile != worldView->floating_tile_list.end(); ++tile)
+        {
+            out << 3;
+            out << (*tile)->getX();
+            out << (*tile)->getY();
+            out << (*tile)->getIndex();
+            out << (*tile)->getFloatHeight();
+            out << (*tile)->getMaxThrust();
         }
 
         out << -1;
