@@ -15,10 +15,12 @@
 #include "imagecontainer.h"
 #include "floatingtile.h"
 #include "tile.h"
+#include "light.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <QDir>
+#include <QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -92,6 +94,12 @@ void MainWindow::open()
 
                     input +=6;
                 }
+                else if (currentType == 4)
+                {
+                    worldView->addLight(input[1], input[2], input[3], input[4], input[5], input[6], input[7]);
+
+                    input += 8;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -149,6 +157,18 @@ void MainWindow::save()
             out << (*tile)->getIndex();
             out << (*tile)->getFloatHeight();
             out << (*tile)->getMaxThrust();
+        }
+
+        for (auto light = worldView->light_list.begin(); light != worldView->light_list.end(); ++light)
+        {
+            out << 4;
+            out << (*light)->getX();
+            out << (*light)->getY();
+            out << (*light)->getRadius();
+            out << (*light)->getRed();
+            out << (*light)->getGreen();
+            out << (*light)->getBlue();
+            out << (*light)->getAlpha();
         }
 
         out << -1;
@@ -221,15 +241,17 @@ void MainWindow::createActions()
     //adding menu
     addPlayer = new QAction(tr("Player"), this);
     addFloatingTile = new QAction(tr("Floating Tile"), this);
+    addLight = new QAction(tr("Light"), this);
 
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
     connect(addPlayer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect(addFloatingTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
+    addingMapper->setMapping(addLight, LightObject);
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
-
 }
 
 //Creates drop-down menus.
@@ -240,6 +262,7 @@ void MainWindow::createMenus()
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
+    addMenu->addAction(addLight);
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
@@ -361,6 +384,13 @@ void MainWindow::selectTile()
 
     currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
 }
+
+/*void MainWindow::mouseMoveEvent (QMouseEvent *event)
+{
+    QPointF p = event->pos();
+
+    label->setLabel(tr("x: %1 y: %2").arg(p.x()).arg(p.y()));
+}*/
 
 void MainWindow::setAdding(int newType)
 {

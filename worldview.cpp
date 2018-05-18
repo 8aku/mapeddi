@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include "light.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -62,6 +63,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
             addFloatingTile(p.x(), p.y(), MapEddi::selectedIndex, p.y(), 10);
             levelScene->update();
         }
+        else if (MapEddi::currentlyAdding == LightObject && event->modifiers() != Qt::ShiftModifier)
+        {
+            addLight(p.x(), p.y());
+        }
     }
 }
 
@@ -98,6 +103,22 @@ void WorldView::addFloatingTile(int x, int y, int index, int floatHeight, int ma
     floating_tile_list.push_front(floatingTile);
 }
 
+void WorldView::addLight(int x, int y)
+{
+    Light *light = new Light(x, y, this);
+    levelScene->addItem(light);
+
+    light_list.push_front(light);
+}
+
+void WorldView::addLight(int x, int y, int radius, int r, int g, int b, int a)
+{
+    Light *light = new Light(x, y, radius, r, g, b, a, this);
+    levelScene->addItem(light);
+
+    light_list.push_front(light);
+}
+
 void WorldView::clearLevel()
 {
     player->setX(0);
@@ -111,6 +132,10 @@ void WorldView::clearLevel()
     {
         removeFloatingTile(floating_tile_list.front());
     }
+    while (!light_list.empty())
+    {
+        removeLight(light_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -123,6 +148,12 @@ void WorldView::removeFloatingTile(FloatingTile *tile)
 {
     levelScene->removeItem(tile);
     floating_tile_list.remove(tile);
+}
+
+void WorldView::removeLight(Light *light)
+{
+    levelScene->removeItem(light);
+    light_list.remove(light);
 }
 
 //Sets the grid size.
@@ -153,4 +184,11 @@ void WorldView::setPlayerX(int newX)
 void WorldView::setPlayerY(int newY)
 {
     player->setY(newY);
+}
+
+void WorldView::mouseMoveEvent (QMouseEvent *event)
+{
+    QPointF p = event->pos();
+
+    levelScene->setLabel(tr("x: %1 y: %2").arg(p.x()).arg(p.y()));
 }

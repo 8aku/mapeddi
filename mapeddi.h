@@ -11,7 +11,8 @@ enum ObjectType
     SceneryObject,
     ItemObject,
     FloatingTileStart,
-    FloatingTileEnd
+    FloatingTileEnd,
+    LightObject
 };
 
 namespace MapEddi

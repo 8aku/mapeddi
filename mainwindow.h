@@ -28,14 +28,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
     void selectTile();
+
+//protected:
+    //void mouseMoveEvent (QMouseEvent *event);
 
 private:
     Ui::MainWindow *ui;
     QMenu *fileMenu;
     QMenu *layerMenu;
     QMenu *addMenu;
+    QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;
     //QAction *addMonster;

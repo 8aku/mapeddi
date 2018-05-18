@@ -8,16 +8,10 @@ class LevelScene : public QGraphicsScene
 {
 public:
     LevelScene(QWidget *parent);
+    void setLabel (QString labelString);
 
 private:
-    int mouseX;
-    int mouseY;
     QLabel *mouseLabel;
-
-protected:
-    void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
-
-
 };
 
 #endif // LEVELSCENE_H

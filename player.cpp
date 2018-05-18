@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QBrush>
 
-Player::Player() : GameObject(0, 0, 32, 64, true, NULL)
+Player::Player() : GameObject(210, 10, 32, 64, true, NULL)
 {
     image = ImageContainer::playerImage;
 }

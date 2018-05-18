@@ -6,17 +6,12 @@
 
 LevelScene::LevelScene(QWidget *parent)
 {
-    mouseLabel = new QLabel(tr("<%1, %2>").arg(mouseX, mouseY));
+    mouseLabel = new QLabel(tr("<%1 xxxxxxx %2>").arg("x").arg("x"));
 
     addWidget(mouseLabel);
 }
 
-void LevelScene::mouseMoveEvent (QGraphicsSceneMouseEvent *event)
+void LevelScene::setLabel (QString labelString)
 {
-    QPointF p = event->pos();
-
-    mouseX = p.x();
-    mouseY = p.y();
-
-    mouseLabel->setText(tr("%1").arg(mouseX));
+    mouseLabel->setText(labelString);
 }

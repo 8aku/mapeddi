@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     mapeddi.cpp \
     gameobject.cpp \
     player.cpp \
-    floatingtile.cpp
+    floatingtile.cpp \
+    light.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     mapeddi.h \
     gameobject.h \
     player.h \
-    floatingtile.h
+    floatingtile.h \
+    light.h
 
 FORMS    += mainwindow.ui
