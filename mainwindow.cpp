@@ -45,7 +45,7 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files(*.lvl"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Files(*.*)"));
 
     if (fileName != NULL)
     {
