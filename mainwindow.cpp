@@ -85,8 +85,8 @@ void MainWindow::open()
                 }
                 else if (currentType == 2)
                 {
-                    worldView->addTile(input[1], input[2], input[3], input[4]);
-                    input +=5;
+                    worldView->addTile(input[1], input[2], input[3], input[4], input[5]);
+                    input +=6;
                 }
                 else if (currentType == 3)
                 {
@@ -147,6 +147,7 @@ void MainWindow::save()
             out << (*tile)->getY();
             out << (*tile)->getTileIndex();
             out << (int)(*tile)->isSolid();
+            out << (*tile)->getLayer();
         }
 
         for (auto tile = worldView->floating_tile_list.begin(); tile != worldView->floating_tile_list.end(); ++tile)

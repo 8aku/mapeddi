@@ -15,10 +15,12 @@ public:
     bool isDeletable() const;
     int getW() const;
     int getH() const;
-    int setX(int position);
-    int setY(int position);
+    void setX(int position);
+    void setY(int position);
+    void setLayer(int layer);
     int getX() const;
     int getY() const;
+    int getLayer();
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent (QGraphicsSceneMouseEvent *event);
 

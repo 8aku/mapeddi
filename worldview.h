@@ -18,7 +18,7 @@ public:
     explicit WorldView(QWidget *parent = 0);
     void setGridSize(int gridSize);
     void addTile(int x, int y);
-    void addTile(int x, int y, int index, bool isSolid);
+    void addTile(int x, int y, int index, bool isSolid, int layer);
     void addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust);
     void addLight(int x, int y);
     void addLight(int x, int y, int radius, int r, int g, int b, int a);

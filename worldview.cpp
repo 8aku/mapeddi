@@ -80,12 +80,12 @@ void WorldView::addTile(int x, int y)
     int snappedX = x - (x%snapToGrid);
     int snappedY = y - (y%snapToGrid);
 
-    addTile(snappedX, snappedY, MapEddi::selectedIndex, MapEddi::solidSelected);
+    addTile(snappedX, snappedY, MapEddi::selectedIndex, MapEddi::solidSelected, MapEddi::selectedLayer);
 }
 
-void WorldView::addTile(int x, int y, int index, bool isSolid)
+void WorldView::addTile(int x, int y, int index, bool isSolid, int layer)
 {
-    Tile *tile = new Tile(index, x, y, true, isSolid, (MainWindow*)parentWidget(), this);
+    Tile *tile = new Tile(index, x, y, true, isSolid, layer, (MainWindow*)parentWidget(), this);
     levelScene->addItem(tile);
 
     tile_list.push_front(tile);

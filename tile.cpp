@@ -16,18 +16,19 @@
 
 
 Tile::Tile()
-    :Tile(0,0,0, true, true, NULL, NULL)
+    :Tile(0,0,0, true, true, 0, NULL, NULL)
 {
     qDebug() << "Calling null";
 }
 
-Tile::Tile(int x, int y) : Tile(0, x, y, true, true, NULL, NULL)
+Tile::Tile(int x, int y) : Tile(0, x, y, true, true, 0, NULL, NULL)
 {
      qDebug() << "Calling null";
 }
 
-Tile::Tile(int index, int x, int y, bool isDeletable, bool isSolid, MainWindow *mainWindow, WorldView *worldView) : GameObject(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, isDeletable, worldView)
+Tile::Tile(int index, int x, int y, bool isDeletable, bool isSolid, int layer, MainWindow *mainWindow, WorldView *worldView) : GameObject(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, isDeletable, worldView)
 {
+    setLayer(layer);
     solid = isSolid;
     tileIndex = index;
     this->mainWindow = mainWindow;

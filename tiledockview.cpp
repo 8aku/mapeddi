@@ -25,7 +25,7 @@ void TileDockView::init()
 {
     for (unsigned int i = 0; i < ImageContainer::tileImages.size(); i++)
     {
-        Tile *tile = new Tile(i, 0, i * 32, false, false, (MainWindow*)parentWidget(), NULL);
+        Tile *tile = new Tile(i, 0, i * 32, false, false, 0, (MainWindow*)parentWidget(), NULL);
         tileScene->addItem(tile);
     }
 }

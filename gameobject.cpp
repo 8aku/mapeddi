@@ -54,13 +54,13 @@ GameObject::GameObject()
  }
 
  //Sets the X position of a Game Object.
- int GameObject::setX(int position)
+ void GameObject::setX(int position)
  {
      pos.x = position;
  }
 
  //Sets the Y position of a Game Object.
- int GameObject::setY(int position)
+ void GameObject::setY(int position)
  {
      pos.y = position;
  }
@@ -84,4 +84,12 @@ GameObject::GameObject()
      {
          delete this;
      }
+ }
+
+ int GameObject::getLayer() {
+     return layer;
+ }
+
+ void GameObject::setLayer(int layer) {
+    this->layer = layer;
  }

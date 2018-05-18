@@ -13,7 +13,7 @@ class Tile : public GameObject
 {
 public:
     Tile();
-    Tile(int index, int x, int y, bool isDeletable, bool isSolid, MainWindow *mainWindow, WorldView *worldView);
+    Tile(int index, int x, int y, bool isDeletable, bool isSolid, int layer, MainWindow *mainWindow, WorldView *worldView);
     Tile(int x, int y);
     virtual ~Tile();
     QRectF boundingRect() const;
