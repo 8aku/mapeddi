@@ -12,6 +12,7 @@ namespace ImageContainer
 
     extern QImage* playerImage;
 
+    extern std::vector<QImage*> monsterImages;
 }
 
 #endif // IMAGECONTAINER_H

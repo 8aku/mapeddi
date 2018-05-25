@@ -38,10 +38,11 @@ private:
     QMenu *fileMenu;
     QMenu *layerMenu;
     QMenu *addMenu;
+    QMenu *addMonsterMenu;
     QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;
-    //QAction *addMonster;
+    QAction *addSerg;
     //QAction *addObject;
     QAction *newAction;
     QAction *openAction;

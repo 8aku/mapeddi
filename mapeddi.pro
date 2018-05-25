@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     gameobject.cpp \
     player.cpp \
     floatingtile.cpp \
-    light.cpp
+    light.cpp \
+    monsters.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -38,6 +39,7 @@ HEADERS  += mainwindow.h \
     gameobject.h \
     player.h \
     floatingtile.h \
-    light.h
+    light.h \
+    monsters.h
 
 FORMS    += mainwindow.ui

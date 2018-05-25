@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include "light.h"
+#include "monsters.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -67,6 +68,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         {
             addLight(p.x(), p.y());
         }
+        else if (MapEddi::currentlyAdding == MonsterObject)
+        {
+            addMonster(p.x(), p.y(), MapEddi::selectedIndex, false);
+        }
     }
 }
 
@@ -89,6 +94,18 @@ void WorldView::addTile(int x, int y, int index, bool isSolid, int layer)
     levelScene->addItem(tile);
 
     tile_list.push_front(tile);
+}
+
+void WorldView::addMonster(int x, int y, int type, bool facingRight)
+{
+    Monsters *monster = new Monsters (x, y, type, facingRight, this);
+
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    levelScene->addItem(monster);
+
+    monsters_list.push_front(monster);
 }
 
 void WorldView::addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust)
@@ -136,6 +153,10 @@ void WorldView::clearLevel()
     {
         removeLight(light_list.front());
     }
+    while (!monsters_list.empty())
+    {
+        removeMonsters(monsters_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -148,6 +169,12 @@ void WorldView::removeFloatingTile(FloatingTile *tile)
 {
     levelScene->removeItem(tile);
     floating_tile_list.remove(tile);
+}
+
+void WorldView::removeMonsters(Monsters *monster)
+{
+    levelScene->removeItem(monster);
+    monsters_list.remove(monster);
 }
 
 void WorldView::removeLight(Light *light)

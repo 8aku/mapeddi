@@ -16,6 +16,7 @@
 #include "floatingtile.h"
 #include "tile.h"
 #include "light.h"
+#include "monsters.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -100,6 +101,14 @@ void MainWindow::open()
 
                     input += 8;
                 }
+                else if (currentType == 5)
+                {
+                    qDebug() << "hello \n";
+
+                    worldView->addMonster(input[1], input[2], input[3], input[4]);
+
+                    input += 5;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -170,6 +179,14 @@ void MainWindow::save()
             out << (*light)->getGreen();
             out << (*light)->getBlue();
             out << (*light)->getAlpha();
+        }
+        for (auto monster = worldView->monsters_list.begin(); monster != worldView->monsters_list.end(); ++monster)
+        {
+            out << 5;
+            out << (*monster)->getX();
+            out << (*monster)->getY();
+            out << (*monster)->getType();
+            out << (int)(*monster)->getFacingRight();
         }
 
         out << -1;
@@ -244,6 +261,7 @@ void MainWindow::createActions()
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
 
+
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
     connect(addPlayer, SIGNAL(triggered()), addingMapper, SLOT(map()));
@@ -252,6 +270,13 @@ void MainWindow::createActions()
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
+
+    //monsters
+    addSerg = new QAction(tr("Serg"), this);
+
+    connect (addSerg, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addSerg, MonsterObject);
+
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
 }
 
@@ -260,14 +285,20 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     layerMenu = menuBar()->addMenu(tr("&Layer"));
+
     addMenu = menuBar()->addMenu(tr("&Add"));
+    addMonsterMenu = addMenu->addMenu(tr("&Monster"));
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
+
+    addMonsterMenu->addAction(addSerg);
+
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
+
     layerMenu->addAction(layer0);
     layerMenu->addAction(layer1);
     layerMenu->addAction(layer2);
@@ -406,6 +437,14 @@ void MainWindow::setAdding(int newType)
     else if (MapEddi::currentlyAdding == TileObject)
     {
         MapEddi::currentObjectImage = ImageContainer::tileImages.at(MapEddi::selectedIndex);
+
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+    }
+    else if (MapEddi::currentlyAdding == MonsterObject)
+    {
+        MapEddi::selectedIndex = 0;
+
+        MapEddi::currentObjectImage = ImageContainer::monsterImages.at(MapEddi::selectedIndex * 2);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }

@@ -9,6 +9,8 @@ namespace ImageContainer
 {
     std::vector<QImage*> tileImages;
 
+    std::vector<QImage*> monsterImages;
+
     QImage* playerImage;
 
     //Loads images from a file.
@@ -27,6 +29,10 @@ namespace ImageContainer
         }
 
         playerImage = new QImage(QString::fromStdString("3.png"));
+
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1.png")));
+
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1r.png")));
     }
 }
 

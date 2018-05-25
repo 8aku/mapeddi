@@ -1,13 +1,14 @@
 #ifndef MAPEDDI_H
 #define MAPEDDI_H
 class QImage;
+#include "gameobject.h"
 #include <QString>
 
 enum ObjectType
 {
     PlayerObject,
     TileObject,
-    EnemyObject,
+    MonsterObject,
     SceneryObject,
     ItemObject,
     FloatingTileStart,
