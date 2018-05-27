@@ -5,12 +5,14 @@
 #include "mainwindow.h"
 #include "worldgrid.h"
 #include <forward_list>
+
 class Player;
 class Tile;
 class GameObject;
 class FloatingTile;
 class Light;
 class Monsters;
+class Spike;
 
 class WorldView : public QGraphicsView
 {
@@ -20,6 +22,7 @@ public:
     void setGridSize(int gridSize);
     void addTile(int x, int y);
     void addTile(int x, int y, int index, bool isSolid, int layer);
+    void addSpike(int x, int y);
     void addMonster(int x, int y, int type, bool facingRight);
     void addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust);
     void addLight(int x, int y);
@@ -28,14 +31,15 @@ public:
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
     void removeMonsters(Monsters *monster);
+    void removeSpike(Spike *spike);
     int getPlayerX();
     int getPlayerY();
     void setPlayerX(int newX);
     void setPlayerY(int newY);
-    friend MainWindow;
     void clearLevel();
     void refreshView();
 
+    friend MainWindow;
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent (QMouseEvent *event);
@@ -48,6 +52,7 @@ private:
     std::forward_list<FloatingTile*> floating_tile_list;
     std::forward_list<Light*>light_list;
     std::forward_list<Monsters*>monsters_list;
+    std::forward_list<Spike*> spike_list;
     Player *player;
 };
 

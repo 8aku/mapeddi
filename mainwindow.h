@@ -39,15 +39,18 @@ private:
     QMenu *layerMenu;
     QMenu *addMenu;
     QMenu *addMonsterMenu;
+
     QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;
     QAction *addSerg;
-    //QAction *addObject;
+    QAction *addSpike;
+
     QAction *newAction;
     QAction *openAction;
     QAction *saveAction;
     QAction *saveAsAction;
+
     QAction *layer0;
     QAction *layer1;
     QAction *layer2;

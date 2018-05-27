@@ -13,6 +13,7 @@ enum ObjectType
     ItemObject,
     FloatingTileStart,
     FloatingTileEnd,
+    SpikeObject,
     LightObject
 };
 

@@ -5,6 +5,8 @@
 #include "tile.h"
 #include "floatingtile.h"
 #include "player.h"
+#include "spike.h"
+
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar>
@@ -72,6 +74,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         {
             addMonster(p.x(), p.y(), MapEddi::selectedIndex, false);
         }
+        else if (MapEddi::currentlyAdding == SpikeObject)
+        {
+            addSpike(p.x(), p.y());
+        }
     }
 }
 
@@ -94,6 +100,17 @@ void WorldView::addTile(int x, int y, int index, bool isSolid, int layer)
     levelScene->addItem(tile);
 
     tile_list.push_front(tile);
+}
+
+void WorldView::addSpike(int x, int y)
+{
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    Spike *spike = new Spike(snappedX, snappedY, this);
+    levelScene->addItem(spike);
+
+    spike_list.push_front(spike);
 }
 
 void WorldView::addMonster(int x, int y, int type, bool facingRight)
@@ -157,12 +174,22 @@ void WorldView::clearLevel()
     {
         removeMonsters(monsters_list.front());
     }
+    while (!spike_list.empty())
+    {
+        removeSpike(spike_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
 {
     levelScene->removeItem(tile);
     tile_list.remove(tile);
+}
+
+void WorldView::removeSpike(Spike *spike)
+{
+    levelScene->removeItem(spike);
+    spike_list.remove(spike);
 }
 
 void WorldView::removeFloatingTile(FloatingTile *tile)

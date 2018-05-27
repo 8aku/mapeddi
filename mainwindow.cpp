@@ -11,6 +11,7 @@
 #include "ui_mainwindow.h"
 #include "worldview.h"
 #include "mapeddi.h"
+#include "spike.h"
 #include "gameobject.h"
 #include "imagecontainer.h"
 #include "floatingtile.h"
@@ -75,39 +76,52 @@ void MainWindow::open()
 
                 if (currentType == 0)
                 {
+                    qDebug() << "adding environment settings\n";
                     input += 5;
 
                 }
                 else if (currentType == 1)
                 {
+                    qDebug() << "adding player\n";
                     worldView->setPlayerX(input[1]);
                     worldView->setPlayerY(input[2]);
                     input += 3;
                 }
                 else if (currentType == 2)
                 {
+                    qDebug() << "adding tile\n";
                     worldView->addTile(input[1], input[2], input[3], input[4], input[5]);
                     input +=6;
                 }
                 else if (currentType == 3)
                 {
+                    qDebug() << "adding floating tile\n";
                     worldView->addFloatingTile(input[1], input[2], input[3], input[4], input[5]);
 
                     input +=6;
                 }
                 else if (currentType == 4)
                 {
+                    qDebug() << "adding light\n";
                     worldView->addLight(input[1], input[2], input[3], input[4], input[5], input[6], input[7]);
 
                     input += 8;
                 }
                 else if (currentType == 5)
                 {
-                    qDebug() << "hello \n";
-
-                    worldView->addMonster(input[1], input[2], input[3], input[4]);
+                    qDebug() << "adding monster\n";
+                    qDebug() << "type: " << input[3] << "\n";
+                    if (input[3] < 2 && input[3] >= 0)
+                        worldView->addMonster(input[1], input[2], input[3], input[4]);
 
                     input += 5;
+                }
+                else if (currentType == 6)
+                {
+                    qDebug() << "adding spike\n";
+                    worldView->addSpike(input[1], input[2]);
+
+                    input += 3;
                 }
                 else if (currentType == -1)
                 {
@@ -186,9 +200,15 @@ void MainWindow::save()
             out << (*monster)->getX();
             out << (*monster)->getY();
             out << (*monster)->getType();
+            qDebug() << "monster type saved: " << (*monster)->getType() << "\n";
             out << (int)(*monster)->getFacingRight();
         }
-
+        for (auto spike = worldView->spike_list.begin(); spike != worldView->spike_list.end(); ++spike)
+        {
+            out << 6;
+            out << (*spike)->getX();
+            out << (*spike)->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -260,16 +280,18 @@ void MainWindow::createActions()
     addPlayer = new QAction(tr("Player"), this);
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
-
+    addSpike = new QAction(tr("Spike"), this);
 
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
     connect(addPlayer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect(addFloatingTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addSpike, SIGNAL(triggered()), addingMapper, SLOT(map()));
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
+    addingMapper->setMapping(addSpike, SpikeObject);
 
     //monsters
     addSerg = new QAction(tr("Serg"), this);
@@ -291,6 +313,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
+    addMenu->addAction(addSpike);
 
     addMonsterMenu->addAction(addSerg);
 
@@ -447,5 +470,9 @@ void MainWindow::setAdding(int newType)
         MapEddi::currentObjectImage = ImageContainer::monsterImages.at(MapEddi::selectedIndex * 2);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+    }
+    else if (MapEddi::currentlyAdding == SpikeObject)
+    {
+            MapEddi::selectedIndex = 0;
     }
 }
