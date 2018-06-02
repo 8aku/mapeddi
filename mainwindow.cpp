@@ -295,9 +295,21 @@ void MainWindow::createActions()
 
     //monsters
     addSerg = new QAction(tr("Serg"), this);
+    addCrabber = new QAction(tr("Crabber"), this);
+    addPuff = new QAction(tr("Puff"), this);
+    addJelly = new QAction(tr("Jelly"), this);
 
     connect (addSerg, SIGNAL(triggered()), addingMapper, SLOT(map()));
-    addingMapper->setMapping(addSerg, MonsterObject);
+    addingMapper->setMapping(addSerg, 100);
+
+    connect (addCrabber, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addCrabber, 101);
+
+    connect (addPuff, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addPuff, 102);
+
+    connect (addJelly, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addJelly, 103);
 
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
 }
@@ -316,6 +328,9 @@ void MainWindow::createMenus()
     addMenu->addAction(addSpike);
 
     addMonsterMenu->addAction(addSerg);
+    addMonsterMenu->addAction(addCrabber);
+    addMonsterMenu->addAction(addPuff);
+    addMonsterMenu->addAction(addJelly);
 
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
@@ -463,10 +478,10 @@ void MainWindow::setAdding(int newType)
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }
-    else if (MapEddi::currentlyAdding == MonsterObject)
+    else if (newType >= 100 && newType < 200)
     {
-        MapEddi::selectedIndex = 0;
-
+        MapEddi::selectedIndex = newType - 100;
+        MapEddi::currentlyAdding = MonsterObject;
         MapEddi::currentObjectImage = ImageContainer::monsterImages.at(MapEddi::selectedIndex * 2);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));

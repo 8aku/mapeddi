@@ -12,6 +12,8 @@ namespace ImageContainer
     std::vector<QImage*> monsterImages;
 
     QImage* playerImage;
+    QImage* spikeImage;
+    QImage* lightImage;
 
     //Loads images from a file.
     void loadImages()
@@ -31,8 +33,19 @@ namespace ImageContainer
         playerImage = new QImage(QString::fromStdString("3.png"));
 
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1.png")));
-
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1r.png")));
+
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/crab1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/crab1.png")));
+
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/puff1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/puff1.png")));
+
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
+         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
+
+         lightImage = new QImage(QString::fromStdString("light.png"));
+         spikeImage = new QImage(QString::fromStdString("spike.png"));
     }
 }
 

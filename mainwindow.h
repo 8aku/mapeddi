@@ -44,6 +44,9 @@ private:
     QAction *addPlayer;
     QAction *addFloatingTile;
     QAction *addSerg;
+    QAction *addPuff;
+    QAction *addJelly;
+    QAction *addCrabber;
     QAction *addSpike;
 
     QAction *newAction;
