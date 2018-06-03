@@ -111,7 +111,7 @@ void MainWindow::open()
                 {
                     qDebug() << "adding monster\n";
                     qDebug() << "type: " << input[3] << "\n";
-                    if (input[3] < 2 && input[3] >= 0)
+                    if (input[3] < 4 && input[3] >= 0)
                         worldView->addMonster(input[1], input[2], input[3], input[4]);
 
                     input += 5;
