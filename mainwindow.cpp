@@ -298,6 +298,11 @@ void MainWindow::createActions()
     addCrabber = new QAction(tr("Crabber"), this);
     addPuff = new QAction(tr("Puff"), this);
     addJelly = new QAction(tr("Jelly"), this);
+    addEdo = new QAction(tr("Edo"), this);
+    addSkull = new QAction(tr("Skull"), this);
+    addShroom = new QAction(tr("Shroom"), this);
+    addWalker = new QAction(tr("Walker"), this);
+    addXe = new QAction(tr("Xe"), this);
 
     connect (addSerg, SIGNAL(triggered()), addingMapper, SLOT(map()));
     addingMapper->setMapping(addSerg, 100);
@@ -310,6 +315,21 @@ void MainWindow::createActions()
 
     connect (addJelly, SIGNAL(triggered()), addingMapper, SLOT(map()));
     addingMapper->setMapping(addJelly, 103);
+
+    connect (addEdo, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addEdo, 104);
+
+    connect (addSkull, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addSkull, 105);
+
+    connect (addShroom, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addShroom, 106);
+
+    connect (addWalker, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addWalker, 107);
+
+    connect (addXe, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    addingMapper->setMapping(addXe, 108);
 
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
 }
@@ -331,6 +351,11 @@ void MainWindow::createMenus()
     addMonsterMenu->addAction(addCrabber);
     addMonsterMenu->addAction(addPuff);
     addMonsterMenu->addAction(addJelly);
+    addMonsterMenu->addAction(addEdo);
+    addMonsterMenu->addAction(addSkull);
+    addMonsterMenu->addAction(addShroom);
+    addMonsterMenu->addAction(addWalker);
+    addMonsterMenu->addAction(addXe);
 
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);

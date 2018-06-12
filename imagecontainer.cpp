@@ -44,6 +44,21 @@ namespace ImageContainer
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
          monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
 
+         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/edoleft.png")));
+          monsterImages.push_back(new QImage(QString::fromStdString("Monsters/edoright.png")));
+
+          monsterImages.push_back(new QImage(QString::fromStdString("Monsters/skullleft.png")));
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/skulllright.png")));
+
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/shroom.png")));
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/shroom.png")));
+
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/walker1.png")));
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/walker1.png")));
+
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/xeleft.png")));
+           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/xeright.png")));
+
          lightImage = new QImage(QString::fromStdString("light.png"));
          spikeImage = new QImage(QString::fromStdString("spike.png"));
     }

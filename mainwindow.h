@@ -48,6 +48,11 @@ private:
     QAction *addJelly;
     QAction *addCrabber;
     QAction *addSpike;
+    QAction *addEdo;
+    QAction *addShroom;
+    QAction *addSkull;
+    QAction *addWalker;
+    QAction *addXe;
 
     QAction *newAction;
     QAction *openAction;
