@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <QString>
-#define NUMBER_OF_TILES 45
+#define NUMBER_OF_TILES 47
 
 namespace ImageContainer
 {
