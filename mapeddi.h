@@ -14,7 +14,9 @@ enum ObjectType
     FloatingTileStart,
     FloatingTileEnd,
     SpikeObject,
-    LightObject
+    LightObject,
+    BouncerObject,
+    NUM_OBJECT_TYPES
 };
 
 namespace MapEddi

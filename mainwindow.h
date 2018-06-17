@@ -40,6 +40,7 @@ private:
     QMenu *addMenu;
     QMenu *addMonsterMenu;
 
+    QAction *addBouncer;
     QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;

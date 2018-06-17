@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     floatingtile.cpp \
     light.cpp \
     monsters.cpp \
-    spike.cpp
+    spike.cpp \
+    bouncer.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -42,6 +43,7 @@ HEADERS  += mainwindow.h \
     floatingtile.h \
     light.h \
     monsters.h \
-    spike.h
+    spike.h \
+    bouncer.h
 
 FORMS    += mainwindow.ui

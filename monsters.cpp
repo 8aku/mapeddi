@@ -27,7 +27,7 @@ bool Monsters::getFacingRight()
 }
 
 //Draws the monster
-void Monsters:: paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Monsters::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QBrush brush;
     painter->setBrush(brush);

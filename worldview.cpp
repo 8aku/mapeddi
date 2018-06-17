@@ -1,17 +1,18 @@
-#include "worldview.h"
-#include "levelscene.h"
-#include "worldgrid.h"
-#include "mapeddi.h"
-#include "tile.h"
-#include "floatingtile.h"
-#include "player.h"
-#include "spike.h"
-
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar>
+
+#include "bouncer.h"
+#include "floatingtile.h"
 #include "light.h"
+#include "levelscene.h"
+#include "mapeddi.h"
 #include "monsters.h"
+#include "spike.h"
+#include "tile.h"
+#include "player.h"
+#include "worldview.h"
+#include "worldgrid.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -78,6 +79,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         {
             addSpike(p.x(), p.y());
         }
+        else if (MapEddi::currentlyAdding == BouncerObject)
+        {
+            addBouncer(MapEddi::selectedIndex, p.x(), p.y());
+        }
     }
 }
 
@@ -111,6 +116,16 @@ void WorldView::addSpike(int x, int y)
     levelScene->addItem(spike);
 
     spike_list.push_front(spike);
+}
+
+void WorldView::addBouncer(int index, int x, int y)
+{
+    int snappedX = x - (x % snapToGrid);
+    int snappedY = y - (y % snapToGrid);
+
+    Bouncer *bouncer = new Bouncer(index, snappedX, snappedY, this);
+    levelScene->addItem(bouncer);
+    bouncer_list.push_front(bouncer);
 }
 
 void WorldView::addMonster(int x, int y, int type, bool facingRight)
@@ -190,6 +205,12 @@ void WorldView::removeSpike(Spike *spike)
 {
     levelScene->removeItem(spike);
     spike_list.remove(spike);
+}
+
+void WorldView::removeBouncer(Bouncer *bouncer)
+{
+    levelScene->removeItem(bouncer);
+    bouncer_list.remove(bouncer);
 }
 
 void WorldView::removeFloatingTile(FloatingTile *tile)

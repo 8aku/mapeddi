@@ -14,6 +14,7 @@ namespace ImageContainer
     QImage* playerImage;
     QImage* spikeImage;
     QImage* lightImage;
+    QImage* bouncerImage;
 
     //Loads images from a file.
     void loadImages()
@@ -61,6 +62,7 @@ namespace ImageContainer
 
          lightImage = new QImage(QString::fromStdString("light.png"));
          spikeImage = new QImage(QString::fromStdString("spike.png"));
+         bouncerImage = new QImage(QString::fromStdString("images/bouncer.png"));
     }
 }
 

@@ -13,6 +13,7 @@ class FloatingTile;
 class Light;
 class Monsters;
 class Spike;
+class Bouncer;
 
 class WorldView : public QGraphicsView
 {
@@ -27,11 +28,13 @@ public:
     void addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust);
     void addLight(int x, int y);
     void addLight(int x, int y, int radius, int r, int g, int b, int a);
+    void addBouncer(int index, int x, int y);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
     void removeMonsters(Monsters *monster);
     void removeSpike(Spike *spike);
+    void removeBouncer(Bouncer *bouncer);
     int getPlayerX();
     int getPlayerY();
     void setPlayerX(int newX);
@@ -53,6 +56,7 @@ private:
     std::forward_list<Light*>light_list;
     std::forward_list<Monsters*>monsters_list;
     std::forward_list<Spike*> spike_list;
+    std::forward_list<Bouncer*> bouncer_list;
     Player *player;
 };
 

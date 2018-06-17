@@ -13,6 +13,7 @@ namespace ImageContainer
     extern QImage* playerImage;
 
     extern QImage* spikeImage;
+    extern QImage* bouncerImage;
     extern QImage* lightImage;
     extern std::vector<QImage*> monsterImages;
 }

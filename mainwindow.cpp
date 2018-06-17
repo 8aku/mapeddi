@@ -6,8 +6,10 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSignalMapper>
-#include "tiledockview.h"
+
 #include "mainwindow.h"
+#include "bouncer.h"
+#include "tiledockview.h"
 #include "ui_mainwindow.h"
 #include "worldview.h"
 #include "mapeddi.h"
@@ -123,6 +125,12 @@ void MainWindow::open()
 
                     input += 3;
                 }
+                else if (currentType == 7)
+                {
+                    qDebug() << "adding bouncer\n";
+                    worldView->addBouncer(input[1], input[2], input[3]);
+                    input += 4;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -209,6 +217,13 @@ void MainWindow::save()
             out << (*spike)->getX();
             out << (*spike)->getY();
         }
+        for (auto bouncer = worldView->bouncer_list.begin(); bouncer != worldView->bouncer_list.end(); ++bouncer)
+        {
+            out << 7;
+            out << (*bouncer)->getIndex();
+            out << (*bouncer)->getX();
+            out << (*bouncer)->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -281,6 +296,7 @@ void MainWindow::createActions()
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
     addSpike = new QAction(tr("Spike"), this);
+    addBouncer = new QAction(tr("Bouncer"), this);
 
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
@@ -288,11 +304,13 @@ void MainWindow::createActions()
     connect(addFloatingTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addSpike, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
+
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
     addingMapper->setMapping(addSpike, SpikeObject);
-
+    addingMapper->setMapping(addBouncer, BouncerObject);
     //monsters
     addSerg = new QAction(tr("Serg"), this);
     addCrabber = new QAction(tr("Crabber"), this);
@@ -346,6 +364,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
     addMenu->addAction(addSpike);
+    addMenu->addAction(addBouncer);
 
     addMonsterMenu->addAction(addSerg);
     addMonsterMenu->addAction(addCrabber);
@@ -512,6 +531,10 @@ void MainWindow::setAdding(int newType)
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }
     else if (MapEddi::currentlyAdding == SpikeObject)
+    {
+            MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == BouncerObject)
     {
             MapEddi::selectedIndex = 0;
     }
