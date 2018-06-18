@@ -41,6 +41,7 @@ private:
     QMenu *addMonsterMenu;
 
     QAction *addBouncer;
+    QAction *addDoor;
     QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;

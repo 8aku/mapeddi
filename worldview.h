@@ -14,6 +14,7 @@ class Light;
 class Monsters;
 class Spike;
 class Bouncer;
+class Door;
 
 class WorldView : public QGraphicsView
 {
@@ -29,12 +30,14 @@ public:
     void addLight(int x, int y);
     void addLight(int x, int y, int radius, int r, int g, int b, int a);
     void addBouncer(int index, int x, int y);
+    void addDoor(int dest, int x, int y);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
     void removeMonsters(Monsters *monster);
     void removeSpike(Spike *spike);
     void removeBouncer(Bouncer *bouncer);
+    void removeDoor(Door *door);
     int getPlayerX();
     int getPlayerY();
     void setPlayerX(int newX);
@@ -57,6 +60,7 @@ private:
     std::forward_list<Monsters*>monsters_list;
     std::forward_list<Spike*> spike_list;
     std::forward_list<Bouncer*> bouncer_list;
+    std::forward_list<Door*> door_list;
     Player *player;
 };
 

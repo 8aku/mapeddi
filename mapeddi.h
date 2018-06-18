@@ -16,6 +16,7 @@ enum ObjectType
     SpikeObject,
     LightObject,
     BouncerObject,
+    DoorObject,
     NUM_OBJECT_TYPES
 };
 
@@ -29,6 +30,8 @@ namespace MapEddi
     extern QString currentFile;
     extern int levelWidth;
     extern int levelHeight;
+    extern int mouse_x;
+    extern int mouse_y;
 }
 
 #endif // MAPEDDI_H

@@ -9,6 +9,7 @@
 
 #include "mainwindow.h"
 #include "bouncer.h"
+#include "door.h"
 #include "tiledockview.h"
 #include "ui_mainwindow.h"
 #include "worldview.h"
@@ -131,6 +132,12 @@ void MainWindow::open()
                     worldView->addBouncer(input[1], input[2], input[3]);
                     input += 4;
                 }
+                else if (currentType == 8)
+                {
+                    qDebug() << "adding door\n";
+                    worldView->addDoor(input[1], input[2], input[3]);
+                    input += 4;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -224,6 +231,13 @@ void MainWindow::save()
             out << (*bouncer)->getX();
             out << (*bouncer)->getY();
         }
+        for (auto door = worldView->door_list.begin(); door != worldView->door_list.end(); ++door)
+        {
+            out << 8;
+            out << (*door)->getDest();
+            out << (*door)->getX();
+            out << (*door)->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -297,6 +311,7 @@ void MainWindow::createActions()
     addLight = new QAction(tr("Light"), this);
     addSpike = new QAction(tr("Spike"), this);
     addBouncer = new QAction(tr("Bouncer"), this);
+    addDoor = new QAction(tr("Door"), this);
 
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
@@ -305,12 +320,15 @@ void MainWindow::createActions()
     connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addSpike, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
     addingMapper->setMapping(addSpike, SpikeObject);
     addingMapper->setMapping(addBouncer, BouncerObject);
+    addingMapper->setMapping(addDoor, DoorObject);
+
     //monsters
     addSerg = new QAction(tr("Serg"), this);
     addCrabber = new QAction(tr("Crabber"), this);
@@ -365,6 +383,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addLight);
     addMenu->addAction(addSpike);
     addMenu->addAction(addBouncer);
+    addMenu->addAction(addDoor);
 
     addMonsterMenu->addAction(addSerg);
     addMonsterMenu->addAction(addCrabber);
@@ -537,5 +556,9 @@ void MainWindow::setAdding(int newType)
     else if (MapEddi::currentlyAdding == BouncerObject)
     {
             MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == DoorObject)
+    {
+        MapEddi::selectedIndex = 0;
     }
 }

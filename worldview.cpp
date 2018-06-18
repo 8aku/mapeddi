@@ -1,8 +1,10 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QToolTip>
 
 #include "bouncer.h"
+#include "door.h"
 #include "floatingtile.h"
 #include "light.h"
 #include "levelscene.h"
@@ -83,6 +85,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         {
             addBouncer(MapEddi::selectedIndex, p.x(), p.y());
         }
+        else if (MapEddi::currentlyAdding == DoorObject && event->modifiers() != Qt::ShiftModifier)
+        {
+            addDoor(MapEddi::selectedIndex, p.x(), p.y());
+        }
     }
 }
 
@@ -126,6 +132,17 @@ void WorldView::addBouncer(int index, int x, int y)
     Bouncer *bouncer = new Bouncer(index, snappedX, snappedY, this);
     levelScene->addItem(bouncer);
     bouncer_list.push_front(bouncer);
+}
+
+void WorldView::addDoor(int dest, int x, int y)
+{
+    int snappedX = x - (x % snapToGrid);
+    int snappedY = y - (y % snapToGrid);
+
+    Door *door = new Door(dest, snappedX, snappedY, this);
+
+    levelScene->addItem(door);
+    door_list.push_front(door);
 }
 
 void WorldView::addMonster(int x, int y, int type, bool facingRight)
@@ -193,6 +210,14 @@ void WorldView::clearLevel()
     {
         removeSpike(spike_list.front());
     }
+    while (!door_list.empty())
+    {
+        removeDoor(door_list.front());
+    }
+    while (!bouncer_list.empty())
+    {
+        removeBouncer(bouncer_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -231,6 +256,12 @@ void WorldView::removeLight(Light *light)
     light_list.remove(light);
 }
 
+void WorldView::removeDoor(Door *door)
+{
+    levelScene->removeItem(door);
+    door_list.remove(door);
+}
+
 //Sets the grid size.
 void WorldView::setGridSize(int gridSize)
 {
@@ -265,5 +296,9 @@ void WorldView::mouseMoveEvent (QMouseEvent *event)
 {
     QPointF p = event->pos();
 
-    levelScene->setLabel(tr("x: %1 y: %2").arg(p.x()).arg(p.y()));
+    MapEddi::mouse_x = p.x();
+    MapEddi::mouse_y = p.y();
+
+    QString pos_tooltip( tr("x:%1, y:%2").arg(p.x()).arg(p.y()));
+    QToolTip::showText(QPoint(x(), y()), pos_tooltip, this, QRect(x(), y(), width(), height()));
 }

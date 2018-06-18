@@ -6,6 +6,8 @@ namespace MapEddi
 {
     int levelWidth = DEFAULT_WIDTH;
     int levelHeight = DEFAULT_HEIGHT;
+    int mouse_x = 0;
+    int mouse_y = 0;
     int selectedIndex;
     int selectedLayer;
     bool solidSelected;
