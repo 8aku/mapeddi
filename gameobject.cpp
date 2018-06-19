@@ -21,6 +21,7 @@ GameObject::GameObject()
      this->deletable = deletable;
      layer = MapEddi::selectedLayer;
      this->worldView = worldView;
+     selected = false;
  }
 
  GameObject::~GameObject()
@@ -71,10 +72,35 @@ GameObject::GameObject()
      return deletable;
  }
 
+ bool GameObject::isSelected() const
+ {
+     return selected;
+ }
+
+ void GameObject::toggleSelected()
+ {
+    selected = !selected;
+    worldView->refreshView();
+ }
+
+ void GameObject::select()
+ {
+     selected = true;
+ }
+
+ void GameObject::deselect()
+ {
+     selected = false;
+ }
+
  //Draws a Game Object.
  void GameObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
  {
-     ;
+     if (selected)
+     {
+         QColor brushColour(60, 20, 150, 100);
+         painter->fillRect(boundingRect(), QBrush(brushColour));
+     }
  }
 
  //Places or deletes the selected tile.
@@ -83,6 +109,10 @@ GameObject::GameObject()
      if (event->button() == Qt::RightButton && isDeletable())
      {
          delete this;
+     }
+     else if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier && isDeletable())
+     {
+         toggleSelected();
      }
  }
 

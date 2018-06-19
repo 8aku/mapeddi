@@ -551,14 +551,25 @@ void MainWindow::setAdding(int newType)
     }
     else if (MapEddi::currentlyAdding == SpikeObject)
     {
-            MapEddi::selectedIndex = 0;
+        MapEddi::currentObjectImage = ImageContainer::spikeImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+        MapEddi::selectedIndex = 0;
     }
     else if (MapEddi::currentlyAdding == BouncerObject)
     {
-            MapEddi::selectedIndex = 0;
+        MapEddi::currentObjectImage = ImageContainer::bouncerImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+        MapEddi::selectedIndex = 0;
     }
     else if (MapEddi::currentlyAdding == DoorObject)
     {
         MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == LightObject)
+    {
+        MapEddi::currentObjectImage = ImageContainer::lightImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+        MapEddi::selectedIndex = 0;
+
     }
 }

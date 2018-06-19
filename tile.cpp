@@ -64,6 +64,8 @@ void Tile::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         QRectF cell (QRectF(getX(), getY(), getW(), getH()));
         painter->drawRect(cell);
     }
+
+    GameObject::paint(painter, option, widget);
 }
 
 //Places or deletes the selected tile.

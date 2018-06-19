@@ -45,14 +45,16 @@ WorldView::WorldView(QWidget *parent)
      player = new Player;
 
      levelScene->addItem(player);
+
+     selectionRect = nullptr;
 }
 
 void WorldView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        QPointF p = mapToScene(event->pos());
+     QPointF p = mapToScene(event->pos());
 
+    if (event->button() == Qt::LeftButton && event->modifiers() != Qt::ControlModifier)
+    {
         if (MapEddi::currentlyAdding == TileObject)
         {
             addTile(p.x(), p.y());
@@ -89,6 +91,43 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         {
             addDoor(MapEddi::selectedIndex, p.x(), p.y());
         }
+    }
+    else if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier)
+    {
+        if (selectionRect == nullptr)
+        {
+            qDebug() << "selection rect is nullptr";
+
+            selectionRect = new SelectionRect(p.x(), p.y());
+            levelScene->addItem(selectionRect);
+            selectionRect->update();
+            levelScene->update();
+        }
+    }
+}
+
+void WorldView::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (selectionRect != nullptr)
+    {
+        for (auto t : tile_list)
+        {
+            if (t->getX() >= selectionRect->getX() &&
+                    t->getX() <= selectionRect->getX() + selectionRect->getW() &&
+                    t->getY() >= selectionRect->getY() &&
+                    t->getY() <= selectionRect->getY() + selectionRect->getH())
+            {
+                t->select();
+            }
+            else
+            {
+                t->deselect();
+            }
+        }
+
+        delete selectionRect;
+        selectionRect = nullptr;
+        levelScene->update();
     }
 }
 
@@ -294,11 +333,44 @@ void WorldView::setPlayerY(int newY)
 
 void WorldView::mouseMoveEvent (QMouseEvent *event)
 {
-    QPointF p = event->pos();
+    QPointF p = mapToScene(event->pos());
 
     MapEddi::mouse_x = p.x();
     MapEddi::mouse_y = p.y();
 
     QString pos_tooltip( tr("x:%1, y:%2").arg(p.x()).arg(p.y()));
     QToolTip::showText(QPoint(x(), y()), pos_tooltip, this, QRect(x(), y(), width(), height()));
+
+    if (selectionRect != nullptr)
+    {
+        selectionRect->setWidth(p.x() - selectionRect->getX());
+        selectionRect->setHeight(p.y() - selectionRect->getY());
+
+        levelScene->update();
+    }
 }
+
+void WorldView::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Delete)
+    {
+        std::forward_list<Tile*> selectedTiles;
+
+        for (auto t : tile_list)
+        {
+            if (t->isSelected())
+            {
+                selectedTiles.push_front(t);
+            }
+        }
+
+        for (auto t : selectedTiles)
+        {
+             removeTile(t);
+             delete t;
+        }
+
+        selectedTiles.clear();
+    }
+}
+

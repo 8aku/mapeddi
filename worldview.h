@@ -5,6 +5,7 @@
 #include "mainwindow.h"
 #include "worldgrid.h"
 #include <forward_list>
+#include "selectionrect.h"
 
 class Player;
 class Tile;
@@ -48,7 +49,9 @@ public:
     friend MainWindow;
 protected:
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent (QMouseEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
 private:
     LevelScene *levelScene;
@@ -62,6 +65,7 @@ private:
     std::forward_list<Bouncer*> bouncer_list;
     std::forward_list<Door*> door_list;
     Player *player;
+    SelectionRect *selectionRect;
 };
 
 #endif // WORLDVIEW_H

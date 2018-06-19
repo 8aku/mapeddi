@@ -26,7 +26,7 @@ namespace ImageContainer
             path.str("");
             path.clear();
 
-            path << "tile_test/" << i + 1 << ".png";
+            path << "tile_test2/" << i + 1 << ".png";
 
             tileImages.push_back(new QImage(QString::fromStdString(path.str())));
         }

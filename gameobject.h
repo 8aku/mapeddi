@@ -13,6 +13,10 @@ public:
     GameObject(int x, int y, int width, int height, bool deletable, WorldView *worldView);
     virtual ~GameObject();
     bool isDeletable() const;
+    bool isSelected() const;
+    void toggleSelected();
+    void select();
+    void deselect();
     int getW() const;
     int getH() const;
     void setX(int position);
@@ -29,6 +33,7 @@ protected:
 
 
 private:
+    bool selected;
     bool deletable;
     int layer;
     int width;
