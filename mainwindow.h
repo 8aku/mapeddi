@@ -34,11 +34,13 @@ public:
     //void mouseMoveEvent (QMouseEvent *event);
 
 private:
+    int tileset;
     Ui::MainWindow *ui;
     QMenu *fileMenu;
     QMenu *layerMenu;
     QMenu *addMenu;
     QMenu *addMonsterMenu;
+    QMenu *tilesetMenu;
 
     QAction *addBouncer;
     QAction *addDoor;
@@ -55,6 +57,10 @@ private:
     QAction *addSkull;
     QAction *addWalker;
     QAction *addXe;
+
+    QAction *tileset1;
+    QAction *tileset2;
+    QAction *tileset3;
 
     QAction *newAction;
     QAction *openAction;
@@ -88,6 +94,7 @@ private slots:
     void selectLayer(int layer);
     void setSolid();
     void setAdding(int newType);
+    void setTileset(int tileset);
 };
 
 #endif // MAINWINDOW_H

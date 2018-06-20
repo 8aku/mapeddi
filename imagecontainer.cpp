@@ -2,8 +2,9 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <QDebug>
 #include <QString>
-#define NUMBER_OF_TILES 47
+#include "mainwindow.h"
 
 namespace ImageContainer
 {
@@ -15,21 +16,37 @@ namespace ImageContainer
     QImage* spikeImage;
     QImage* lightImage;
     QImage* bouncerImage;
+    std::ostringstream path;
+    int tileNumber = 60;
+    int imageContainerTileset = 1;
+
+    //load textures
+    void loadTextures()
+    {
+        for (auto img : tileImages)
+        {
+            delete img;
+        }
+
+        tileImages.clear();
+
+        path.str("");
+        path.clear();
+
+        for (int i = 0; i < tileNumber; i++)
+        {
+            path << "tile_test" << ImageContainer::imageContainerTileset << "/" << i+1 << ".png";
+            tileImages.push_back(new QImage(QString::fromStdString(path.str())));
+            path.clear();
+            path.str("");
+        }
+    }
 
     //Loads images from a file.
     void loadImages()
     {
-        std::ostringstream path;
+        loadTextures();
 
-        for (int i = 0; i < NUMBER_OF_TILES; i++)
-        {
-            path.str("");
-            path.clear();
-
-            path << "tile_test2/" << i + 1 << ".png";
-
-            tileImages.push_back(new QImage(QString::fromStdString(path.str())));
-        }
 
         playerImage = new QImage(QString::fromStdString("3.png"));
 

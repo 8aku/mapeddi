@@ -2,10 +2,12 @@
 #define IMAGECONTAINER_H
 #include <vector>
 #include <QImage>
+#include "mainwindow.h"
 
 //holds images for the tile map
 namespace ImageContainer
 {
+    void loadTextures();
     void loadImages();
 
     extern std::vector<QImage*> tileImages;
@@ -16,6 +18,8 @@ namespace ImageContainer
     extern QImage* bouncerImage;
     extern QImage* lightImage;
     extern std::vector<QImage*> monsterImages;
+    extern std::ostringstream path;
+    extern int imageContainerTileset;
 }
 
 #endif // IMAGECONTAINER_H

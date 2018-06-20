@@ -368,6 +368,25 @@ void MainWindow::createActions()
     addingMapper->setMapping(addXe, 108);
 
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
+
+    //tileset
+
+     QSignalMapper *tileMapper = new QSignalMapper(this);
+
+    tileset1 = new QAction(tr("tileset 1"), this);
+    tileset2 = new QAction(tr("tileset 2"), this);
+    tileset3 = new QAction(tr("tileset 3"), this);
+
+    connect (tileset1, SIGNAL(triggered()), tileMapper, SLOT(map()));
+    tileMapper->setMapping(tileset1, 1);
+
+    connect (tileset2, SIGNAL(triggered()), tileMapper, SLOT(map()));
+    tileMapper->setMapping(tileset2, 2);
+
+    connect (tileset3, SIGNAL(triggered()), tileMapper, SLOT(map()));
+    tileMapper->setMapping(tileset3, 3);
+
+    connect(tileMapper, SIGNAL(mapped(int)), this, SLOT(setTileset(int)));
 }
 
 //Creates drop-down menus.
@@ -375,6 +394,7 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     layerMenu = menuBar()->addMenu(tr("&Layer"));
+    tilesetMenu = menuBar()->addMenu(tr("&Tileset"));
 
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMonsterMenu = addMenu->addMenu(tr("&Monster"));
@@ -407,6 +427,10 @@ void MainWindow::createMenus()
     layerMenu->addAction(layer4);
     layerMenu->addAction(layer5);
     layerMenu->addAction(layer6);
+
+    tilesetMenu->addAction(tileset1);
+    tilesetMenu->addAction(tileset2);
+    tilesetMenu->addAction(tileset3);
 }
 
 //Creates dock windows.
@@ -518,13 +542,6 @@ void MainWindow::selectTile()
     currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
 }
 
-/*void MainWindow::mouseMoveEvent (QMouseEvent *event)
-{
-    QPointF p = event->pos();
-
-    label->setLabel(tr("x: %1 y: %2").arg(p.x()).arg(p.y()));
-}*/
-
 void MainWindow::setAdding(int newType)
 {
     MapEddi::currentlyAdding = (ObjectType)newType;
@@ -572,4 +589,13 @@ void MainWindow::setAdding(int newType)
         MapEddi::selectedIndex = 0;
 
     }
+}
+
+void MainWindow::setTileset(int newTileset)
+{
+    qDebug() << "Loading tile set " << newTileset << "\n";
+    tileset = newTileset;
+    ImageContainer::imageContainerTileset = tileset;
+    ImageContainer::loadTextures();
+    worldView->update();
 }
