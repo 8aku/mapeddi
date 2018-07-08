@@ -532,9 +532,10 @@ void MainWindow::createDockWindows()
 
     monsterDock = new QDockWidget(tr("Monster Dock"), this);
 
-    //TileDockView *monsterDockView = new TileDockView(this);
 
-    //monsterDock->setWidget(monsterDockView);
+    TileDockView *monsterDockView = new TileDockView(this);
+    monsterDockView->initMonsters();
+    monsterDock->setWidget(monsterDockView);
     monsterDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     monsterDock->setMinimumWidth(128);
 
@@ -547,9 +548,9 @@ void MainWindow::createDockWindows()
 
     itemDock = new QDockWidget(tr("Item Dock"), this);
 
-    //TileDockView *itemDockView = new TileDockView(this);
+    TileDockView *itemDockView = new TileDockView(this);
 
-    //monsterDock->setWidget(itemDockView);
+    itemDock->setWidget(itemDockView);
     itemDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     itemDock ->setMinimumWidth(128);
 

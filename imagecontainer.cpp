@@ -50,32 +50,23 @@ namespace ImageContainer
 
         playerImage = new QImage(QString::fromStdString("3.png"));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/Serg/1r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/crab1.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/crab1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/2.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/2r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/puff1.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/puff1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/3.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/3r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
-         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/jelly1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/4.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/4r.png")));
 
-         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/edoleft.png")));
-          monsterImages.push_back(new QImage(QString::fromStdString("Monsters/edoright.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/5.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/5r.png")));
 
-          monsterImages.push_back(new QImage(QString::fromStdString("Monsters/skullleft.png")));
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/skulllright.png")));
-
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/shroom.png")));
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/shroom.png")));
-
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/walker1.png")));
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/walker1.png")));
-
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/xeleft.png")));
-           monsterImages.push_back(new QImage(QString::fromStdString("Monsters/xeright.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6r.png")));
 
          lightImage = new QImage(QString::fromStdString("light.png"));
          spikeImage = new QImage(QString::fromStdString("spike.png"));

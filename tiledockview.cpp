@@ -1,4 +1,5 @@
 #include "tiledockview.h"
+#include "monsters.h"
 #include "tile.h"
 #include "imagecontainer.h"
 #include <QDebug>
@@ -30,7 +31,13 @@ void TileDockView::initTiles()
 
 void TileDockView::initMonsters()
 {
-
+    bool facingRight = false;
+    for (unsigned int i = 0; i < 12; i++)
+    {
+        Monsters *m1 = new Monsters((i % 2) * 34, (i/2) * 34, i/2, facingRight, NULL);
+        facingRight = !facingRight;
+        tileScene->addItem(m1);
+    }
 }
 
     void TileDockView::initItems()
