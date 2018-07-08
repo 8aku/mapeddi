@@ -11,8 +11,6 @@ TileDockView::TileDockView(QWidget *parent)
      tileScene->setBackgroundBrush(Qt::black);
      setScene(tileScene);
 
-     init();
-
      setCacheMode(CacheBackground);
      setViewportUpdateMode(BoundingRectViewportUpdate);
      setRenderHint(QPainter::Antialiasing);
@@ -21,7 +19,7 @@ TileDockView::TileDockView(QWidget *parent)
 }
 
 //Initializes the selected tile set within the left tile dock.
-void TileDockView::init()
+void TileDockView::initTiles()
 {
     for (unsigned int i = 0; i < ImageContainer::tileImages.size(); i++)
     {
@@ -29,6 +27,16 @@ void TileDockView::init()
         tileScene->addItem(tile);
     }
 }
+
+void TileDockView::initMonsters()
+{
+
+}
+
+    void TileDockView::initItems()
+    {
+
+    }
 
 void TileDockView::mousePressEvent(QMouseEvent *event)
 {

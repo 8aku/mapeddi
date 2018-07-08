@@ -42,21 +42,25 @@ private:
     QMenu *addMonsterMenu;
     QMenu *tilesetMenu;
 
+    QAction *addItem;
+    QAction *addMonster;
+    QAction *addTile;
     QAction *addBouncer;
     QAction *addDoor;
     QAction *addLight;
     QAction *addPlayer;
     QAction *addFloatingTile;
-    QAction *addSerg;
+    QAction *addSpike;
+
+    /*QAction *addSerg;
     QAction *addPuff;
     QAction *addJelly;
     QAction *addCrabber;
-    QAction *addSpike;
     QAction *addEdo;
     QAction *addShroom;
     QAction *addSkull;
     QAction *addWalker;
-    QAction *addXe;
+    QAction *addXe;*/
 
     QAction *tileset1;
     QAction *tileset2;
@@ -77,6 +81,10 @@ private:
     WorldView *worldView;
     QLabel *currentLayer;
     QLabel *currentObject;
+
+    QDockWidget *tileDock;
+    QDockWidget *monsterDock;
+    QDockWidget *itemDock;
 
     void createDockWindows();
     void createActions();

@@ -293,8 +293,6 @@ void MainWindow::createActions()
     connect(layer5, SIGNAL(triggered()), signalMapper, SLOT(map()));
     connect(layer6, SIGNAL(triggered()), signalMapper, SLOT(map()));
 
-
-
     signalMapper->setMapping(layer0, 0);
     signalMapper->setMapping(layer1, 1);
     signalMapper->setMapping(layer2, 2);
@@ -313,6 +311,10 @@ void MainWindow::createActions()
     addBouncer = new QAction(tr("Bouncer"), this);
     addDoor = new QAction(tr("Door"), this);
 
+    addMonster = new QAction(tr("Monster"), this);
+    addTile = new QAction(tr("Tile"), this);
+    addItem = new QAction(tr("Item"), this);
+
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
     connect(addPlayer, SIGNAL(triggered()), addingMapper, SLOT(map()));
@@ -322,6 +324,10 @@ void MainWindow::createActions()
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
+    connect (addTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addItem, SIGNAL(triggered()), addingMapper, SLOT(map()));
+
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
@@ -329,8 +335,12 @@ void MainWindow::createActions()
     addingMapper->setMapping(addBouncer, BouncerObject);
     addingMapper->setMapping(addDoor, DoorObject);
 
+    addingMapper->setMapping(addTile, TileObject);
+    addingMapper->setMapping(addMonster, MonsterObject);
+    addingMapper->setMapping(addItem, ItemObject);
+
     //monsters
-    addSerg = new QAction(tr("Serg"), this);
+    /*addSerg = new QAction(tr("Serg"), this);
     addCrabber = new QAction(tr("Crabber"), this);
     addPuff = new QAction(tr("Puff"), this);
     addJelly = new QAction(tr("Jelly"), this);
@@ -365,12 +375,11 @@ void MainWindow::createActions()
     addingMapper->setMapping(addWalker, 107);
 
     connect (addXe, SIGNAL(triggered()), addingMapper, SLOT(map()));
-    addingMapper->setMapping(addXe, 108);
+    addingMapper->setMapping(addXe, 108);*/
 
     connect(addingMapper, SIGNAL(mapped(int)), this, SLOT(setAdding(int)));
 
     //tileset
-
      QSignalMapper *tileMapper = new QSignalMapper(this);
 
     tileset1 = new QAction(tr("tileset 1"), this);
@@ -397,7 +406,6 @@ void MainWindow::createMenus()
     tilesetMenu = menuBar()->addMenu(tr("&Tileset"));
 
     addMenu = menuBar()->addMenu(tr("&Add"));
-    addMonsterMenu = addMenu->addMenu(tr("&Monster"));
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
@@ -405,7 +413,11 @@ void MainWindow::createMenus()
     addMenu->addAction(addBouncer);
     addMenu->addAction(addDoor);
 
-    addMonsterMenu->addAction(addSerg);
+    addMenu->addAction(addTile);
+    addMenu->addAction(addMonster);
+    addMenu->addAction(addItem);
+
+   /* addMonsterMenu->addAction(addSerg);
     addMonsterMenu->addAction(addCrabber);
     addMonsterMenu->addAction(addPuff);
     addMonsterMenu->addAction(addJelly);
@@ -413,7 +425,7 @@ void MainWindow::createMenus()
     addMonsterMenu->addAction(addSkull);
     addMonsterMenu->addAction(addShroom);
     addMonsterMenu->addAction(addWalker);
-    addMonsterMenu->addAction(addXe);
+    addMonsterMenu->addAction(addXe);*/
 
     fileMenu->addAction(newAction);
     fileMenu->addAction(openAction);
@@ -437,11 +449,12 @@ void MainWindow::createMenus()
 void MainWindow::createDockWindows()
 {
     //top dock------------------------------------------------------------------------------
-    QDockWidget *dockDock = new QDockWidget(this);
 
-    dockDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+   QDockWidget *topDock = new QDockWidget(this);
 
-    QGroupBox *topDockGroup = new QGroupBox(dockDock);
+    topDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+    QGroupBox *topDockGroup = new QGroupBox(topDock);
 
     QHBoxLayout *topDockLayout = new QHBoxLayout;
     topDockGroup->setFlat(true);
@@ -498,20 +511,51 @@ void MainWindow::createDockWindows()
 
     topDockLayout->addWidget(currentObject, 0, Qt::AlignRight);
 
-    dockDock->setWidget(topDockGroup);
+    topDock->setWidget(topDockGroup);
 
-    addDockWidget(Qt::TopDockWidgetArea, dockDock);
+    addDockWidget(Qt::TopDockWidgetArea, topDock);
 
-    //left dock-----------------------------------------------------------------------------
-    dockDock = new QDockWidget(tr("Tile Dock"), this);
+    //tile dock-----------------------------------------------------------------------------
+    tileDock = new QDockWidget(tr("Tile Dock"), this);
 
     TileDockView *tileDockView = new TileDockView(this);
 
-    dockDock->setWidget(tileDockView);
-    dockDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    dockDock->setMinimumWidth(128);
+    tileDockView->initTiles();
 
-    addDockWidget(Qt::LeftDockWidgetArea, dockDock);
+    tileDock->setWidget(tileDockView);
+    tileDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    tileDock->setMinimumWidth(128);
+
+    addDockWidget(Qt::LeftDockWidgetArea, tileDock);
+
+    //monster dock--------------------------------------------------------------------------
+
+    monsterDock = new QDockWidget(tr("Monster Dock"), this);
+
+    //TileDockView *monsterDockView = new TileDockView(this);
+
+    //monsterDock->setWidget(monsterDockView);
+    monsterDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    monsterDock->setMinimumWidth(128);
+
+    addDockWidget(Qt::LeftDockWidgetArea, monsterDock);
+
+    monsterDock->setHidden(true);
+
+
+    //item dock-----------------------------------------------------------------------------
+
+    itemDock = new QDockWidget(tr("Item Dock"), this);
+
+    //TileDockView *itemDockView = new TileDockView(this);
+
+    //monsterDock->setWidget(itemDockView);
+    itemDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    itemDock ->setMinimumWidth(128);
+
+    addDockWidget(Qt::LeftDockWidgetArea, itemDock);
+
+    itemDock->setHidden(true);
 }
 
 //Determines whether or not a tile is solid.
@@ -554,17 +598,33 @@ void MainWindow::setAdding(int newType)
     }
     else if (MapEddi::currentlyAdding == TileObject)
     {
+        tileDock->setHidden(false);
+        monsterDock->setHidden(true);
+        itemDock->setHidden(true);
+
         MapEddi::currentObjectImage = ImageContainer::tileImages.at(MapEddi::selectedIndex);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }
-    else if (newType >= 100 && newType < 200)
+    /*else if (newType >= 100 && newType < 200)
     {
         MapEddi::selectedIndex = newType - 100;
         MapEddi::currentlyAdding = MonsterObject;
         MapEddi::currentObjectImage = ImageContainer::monsterImages.at(MapEddi::selectedIndex * 2);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+    }*/
+    else if (MapEddi::currentlyAdding == MonsterObject)
+    {
+        tileDock->setHidden(true);
+        itemDock->setHidden(true);
+        monsterDock->setHidden(false);
+    }
+    else if (MapEddi::currentlyAdding == ItemObject)
+    {
+        itemDock->setHidden(false);
+        monsterDock->setHidden(true);
+        tileDock->setHidden(true);
     }
     else if (MapEddi::currentlyAdding == SpikeObject)
     {
