@@ -2,6 +2,7 @@
 #include "imagecontainer.h"
 #include <QPainter>
 #include <QBrush>
+#include <QGraphicsSceneMouseEvent>
 
 Monsters::Monsters()
 {
@@ -40,4 +41,22 @@ void Monsters::paint (QPainter *painter, const QStyleOptionGraphicsItem *option,
 QRectF Monsters::boundingRect() const
 {
     return QRectF(getX(), getY(), getW(), getH());
+}
+
+void Monsters::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        MapEddi::selectedIndex = type;
+        deletable = false;
+        MapEddi::currentlyAdding = MonsterObject;
+        MapEddi::facingRight = facingRight;
+    }
+
+    GameObject::mousePressEvent(event);
+}
+
+void Monsters::setDeletable(bool deletable)
+{
+   this->deletable = deletable;
 }

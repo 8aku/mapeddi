@@ -14,4 +14,5 @@ namespace MapEddi
     QImage *currentObjectImage;
     ObjectType currentlyAdding = TileObject;
     QString currentFile = QString::fromStdString("newlevel.lvl");
+    bool facingRight = false;
 }

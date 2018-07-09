@@ -12,10 +12,14 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     int getType();
     bool getFacingRight();
+    void setDeletable(bool deletable);
 
 private:
     int type;
     bool facingRight;
+
+protected:
+    void mousePressEvent (QGraphicsSceneMouseEvent *event);
 };
 
 #endif // MONSTERS_H

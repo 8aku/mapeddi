@@ -36,6 +36,7 @@ void TileDockView::initMonsters()
     {
         Monsters *m1 = new Monsters((i % 2) * 34, (i/2) * 34, i/2, facingRight, NULL);
         facingRight = !facingRight;
+        m1->setDeletable(false);
         tileScene->addItem(m1);
     }
 }

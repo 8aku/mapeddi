@@ -77,7 +77,7 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         }
         else if (MapEddi::currentlyAdding == MonsterObject)
         {
-            addMonster(p.x(), p.y(), MapEddi::selectedIndex, false);
+            addMonster(p.x(), p.y(), MapEddi::selectedIndex, MapEddi::facingRight);
         }
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
@@ -110,24 +110,40 @@ void WorldView::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selectionRect != nullptr)
     {
-        for (auto t : tile_list)
+        if (event->modifiers() == Qt::ShiftModifier)
         {
-            if (t->getX() >= selectionRect->getX() &&
-                    t->getX() <= selectionRect->getX() + selectionRect->getW() &&
-                    t->getY() >= selectionRect->getY() &&
-                    t->getY() <= selectionRect->getY() + selectionRect->getH())
+            int startX = (int)selectionRect->getX() - ((int)selectionRect->getX() % snapToGrid);
+            int startY = (int)selectionRect->getY() - ((int)selectionRect->getY() % snapToGrid);
+
+            for (int i = 0; i < selectionRect->getW(); i+= snapToGrid)
             {
-                t->select();
-            }
-            else
-            {
-                t->deselect();
+                for (int j = 0; j < selectionRect->getH(); j += snapToGrid)
+                {
+                    addTile(startX + i, startY + j);
+                }
             }
         }
+        else
+        {
+            for (auto t : tile_list)
+            {
+                if (t->getX() >= selectionRect->getX() &&
+                        t->getX() <= selectionRect->getX() + selectionRect->getW() &&
+                        t->getY() >= selectionRect->getY() &&
+                        t->getY() <= selectionRect->getY() + selectionRect->getH())
+                {
+                    t->select();
+                }
+                else
+                {
+                    t->deselect();
+                }
+            }
 
-        delete selectionRect;
-        selectionRect = nullptr;
-        levelScene->update();
+            delete selectionRect;
+            selectionRect = nullptr;
+            levelScene->update();
+        }
     }
 }
 

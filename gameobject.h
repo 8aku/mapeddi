@@ -30,11 +30,11 @@ public:
 
 protected:
     WorldView *worldView;
+     bool deletable;
 
 
 private:
     bool selected;
-    bool deletable;
     int layer;
     int width;
     int height;

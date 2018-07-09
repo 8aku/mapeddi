@@ -32,6 +32,7 @@ namespace MapEddi
     extern int levelHeight;
     extern int mouse_x;
     extern int mouse_y;
+    extern bool facingRight;
 }
 
 #endif // MAPEDDI_H
