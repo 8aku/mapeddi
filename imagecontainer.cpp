@@ -17,7 +17,7 @@ namespace ImageContainer
     QImage* lightImage;
     QImage* bouncerImage;
     std::ostringstream path;
-    int tileNumber = 60;
+    int tileNumber = 75;
     int imageContainerTileset = 1;
 
     //load textures
