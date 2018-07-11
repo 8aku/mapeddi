@@ -165,7 +165,7 @@ void MainWindow::save()
         //background 0
         out << 0;
         //tile set 1
-        out << 0;
+        out << tileset;
         //level width 2
         out << MapEddi::levelWidth;
         //level height 3
