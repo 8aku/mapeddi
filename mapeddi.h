@@ -17,6 +17,7 @@ enum ObjectType
     LightObject,
     BouncerObject,
     DoorObject,
+    RopeObject,
     NUM_OBJECT_TYPES
 };
 

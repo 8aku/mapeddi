@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 #include "worldview.h"
 #include "mapeddi.h"
+#include "rope.h"
 #include "spike.h"
 #include "gameobject.h"
 #include "imagecontainer.h"
@@ -114,7 +115,7 @@ void MainWindow::open()
                 {
                     qDebug() << "adding monster\n";
                     qDebug() << "type: " << input[3] << "\n";
-                    if (input[3] < 4 && input[3] >= 0)
+                    if (input[3] < 7 && input[3] >= 0)
                         worldView->addMonster(input[1], input[2], input[3], input[4]);
 
                     input += 5;
@@ -137,6 +138,13 @@ void MainWindow::open()
                     qDebug() << "adding door\n";
                     worldView->addDoor(input[1], input[2], input[3]);
                     input += 4;
+                }
+                else if (currentType == 9)
+                {
+                    qDebug() << "adding rope\n";
+                    worldView->addRope(input[1], input[2]);
+
+                    input += 3;
                 }
                 else if (currentType == -1)
                 {
@@ -238,6 +246,12 @@ void MainWindow::save()
             out << (*door)->getX();
             out << (*door)->getY();
         }
+        for (auto rope = worldView->rope_list.begin(); rope != worldView->rope_list.end(); ++rope)
+        {
+            out << 9;
+            out << (*rope)->getX();
+            out << (*rope)->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -308,6 +322,7 @@ void MainWindow::createActions()
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
     addSpike = new QAction(tr("Spike"), this);
+    addRope = new QAction(tr("Rope"), this);
     addBouncer = new QAction(tr("Bouncer"), this);
     addDoor = new QAction(tr("Door"), this);
 
@@ -321,6 +336,7 @@ void MainWindow::createActions()
     connect(addFloatingTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addSpike, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addRope, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
@@ -332,6 +348,7 @@ void MainWindow::createActions()
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
     addingMapper->setMapping(addSpike, SpikeObject);
+    addingMapper->setMapping(addRope, RopeObject);
     addingMapper->setMapping(addBouncer, BouncerObject);
     addingMapper->setMapping(addDoor, DoorObject);
 
@@ -410,6 +427,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
     addMenu->addAction(addSpike);
+    addMenu->addAction(addRope);
     addMenu->addAction(addBouncer);
     addMenu->addAction(addDoor);
 

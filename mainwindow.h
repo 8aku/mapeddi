@@ -51,6 +51,7 @@ private:
     QAction *addPlayer;
     QAction *addFloatingTile;
     QAction *addSpike;
+    QAction *addRope;
 
     /*QAction *addSerg;
     QAction *addPuff;

@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     spike.cpp \
     bouncer.cpp \
     door.cpp \
-    selectionrect.cpp
+    selectionrect.cpp \
+    rope.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -48,6 +49,7 @@ HEADERS  += mainwindow.h \
     spike.h \
     bouncer.h \
     door.h \
-    selectionrect.h
+    selectionrect.h \
+    rope.h
 
 FORMS    += mainwindow.ui

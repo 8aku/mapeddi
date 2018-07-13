@@ -68,6 +68,9 @@ namespace ImageContainer
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6.png")));
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6r.png")));
 
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/7.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/7r.png")));
+
          lightImage = new QImage(QString::fromStdString("light.png"));
          spikeImage = new QImage(QString::fromStdString("spike.png"));
          bouncerImage = new QImage(QString::fromStdString("images/bouncer.png"));

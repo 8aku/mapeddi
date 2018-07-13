@@ -10,6 +10,7 @@
 #include "levelscene.h"
 #include "mapeddi.h"
 #include "monsters.h"
+#include "rope.h"
 #include "spike.h"
 #include "tile.h"
 #include "player.h"
@@ -23,7 +24,7 @@ WorldView::WorldView(QWidget *parent)
      levelScene = new LevelScene(this);
      setFrameStyle(Sunken | StyledPanel);
 
-     levelScene->setBackgroundBrush(Qt::black);
+     levelScene->setBackgroundBrush(Qt::white);
      levelScene->setItemIndexMethod(QGraphicsScene::NoIndex);
      levelScene->setSceneRect(0, 0, MapEddi::levelWidth, MapEddi::levelHeight);
 
@@ -82,6 +83,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
             addSpike(p.x(), p.y());
+        }
+        else if (MapEddi::currentlyAdding == RopeObject)
+        {
+            addRope(p.x(), p.y());
         }
         else if (MapEddi::currentlyAdding == BouncerObject)
         {
@@ -179,6 +184,17 @@ void WorldView::addSpike(int x, int y)
     spike_list.push_front(spike);
 }
 
+void WorldView::addRope(int x, int y)
+{
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    Rope *rope = new Rope(snappedX, snappedY, this);
+    levelScene->addItem(rope);
+
+    rope_list.push_front(rope);
+}
+
 void WorldView::addBouncer(int index, int x, int y)
 {
     int snappedX = x - (x % snapToGrid);
@@ -265,6 +281,10 @@ void WorldView::clearLevel()
     {
         removeSpike(spike_list.front());
     }
+    while (!rope_list.empty())
+    {
+        removeRope(rope_list.front());
+    }
     while (!door_list.empty())
     {
         removeDoor(door_list.front());
@@ -285,6 +305,12 @@ void WorldView::removeSpike(Spike *spike)
 {
     levelScene->removeItem(spike);
     spike_list.remove(spike);
+}
+
+void WorldView::removeRope(Rope *rope)
+{
+    levelScene->removeItem(rope);
+    rope_list.remove(rope);
 }
 
 void WorldView::removeBouncer(Bouncer *bouncer)

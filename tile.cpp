@@ -10,9 +10,9 @@
 #include "mainwindow.h"
 #include "worldview.h"
 
-#define DEFAULT_WIDTH 32
+#define DEFAULT_WIDTH 16
 
-#define DEFAULT_HEIGHT 32
+#define DEFAULT_HEIGHT 16
 
 
 Tile::Tile()
@@ -26,7 +26,11 @@ Tile::Tile(int x, int y) : Tile(0, x, y, true, true, 0, NULL, NULL)
      qDebug() << "Calling null";
 }
 
-Tile::Tile(int index, int x, int y, bool isDeletable, bool isSolid, int layer, MainWindow *mainWindow, WorldView *worldView) : GameObject(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, isDeletable, worldView)
+Tile::Tile(int index, int x, int y, bool isDeletable, bool isSolid, int layer, MainWindow *mainWindow, WorldView *worldView) :
+        GameObject(x, y,
+                   ImageContainer::tileImages.at(index)->width(),
+                   ImageContainer::tileImages.at(index)->height(),
+                   isDeletable, worldView)
 {
     setLayer(layer);
     solid = isSolid;

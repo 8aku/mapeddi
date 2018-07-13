@@ -13,6 +13,7 @@ class GameObject;
 class FloatingTile;
 class Light;
 class Monsters;
+class Rope;
 class Spike;
 class Bouncer;
 class Door;
@@ -26,6 +27,7 @@ public:
     void addTile(int x, int y);
     void addTile(int x, int y, int index, bool isSolid, int layer);
     void addSpike(int x, int y);
+    void addRope(int x, int y);
     void addMonster(int x, int y, int type, bool facingRight);
     void addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust);
     void addLight(int x, int y);
@@ -37,6 +39,7 @@ public:
     void removeLight (Light *light);
     void removeMonsters(Monsters *monster);
     void removeSpike(Spike *spike);
+    void removeRope(Rope *rope);
     void removeBouncer(Bouncer *bouncer);
     void removeDoor(Door *door);
     int getPlayerX();
@@ -62,6 +65,7 @@ private:
     std::forward_list<Light*>light_list;
     std::forward_list<Monsters*>monsters_list;
     std::forward_list<Spike*> spike_list;
+    std::forward_list<Rope*> rope_list;
     std::forward_list<Bouncer*> bouncer_list;
     std::forward_list<Door*> door_list;
     Player *player;
