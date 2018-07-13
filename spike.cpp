@@ -3,8 +3,8 @@
 
 #include "spike.h"
 
-#define SPIKE_WIDTH (32)
-#define SPIKE_HEIGHT (32)
+#define SPIKE_WIDTH (16)
+#define SPIKE_HEIGHT (16)
 
 Spike::Spike()
 {
