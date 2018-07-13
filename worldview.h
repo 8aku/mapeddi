@@ -7,6 +7,7 @@
 #include <forward_list>
 #include "selectionrect.h"
 
+class QWheelEvent;
 class Player;
 class Tile;
 class GameObject;
@@ -48,6 +49,9 @@ public:
     void setPlayerY(int newY);
     void clearLevel();
     void refreshView();
+    void wheel ( QWheelEvent* event );
+    void scalingTime(qreal x);
+    void animFinished();
 
     friend MainWindow;
 protected:
@@ -57,6 +61,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
 
 private:
+    int _numScheduledScalings;
     LevelScene *levelScene;
     WorldGrid *worldGrid;
     int snapToGrid;

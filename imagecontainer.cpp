@@ -48,7 +48,7 @@ namespace ImageContainer
         loadTextures();
 
 
-        playerImage = new QImage(QString::fromStdString("3.png"));
+        playerImage = new QImage(QString::fromStdString("player1.png"));
 
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1.png")));
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1r.png")));
