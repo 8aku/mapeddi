@@ -2,6 +2,7 @@
 #include "monsters.h"
 #include "tile.h"
 #include "imagecontainer.h"
+#include "item.h"
 #include <QDebug>
 
 TileDockView::TileDockView(QWidget *parent)
@@ -32,7 +33,7 @@ void TileDockView::initTiles()
 void TileDockView::initMonsters()
 {
     bool facingRight = false;
-    for (unsigned int i = 0; i < 14; i++)
+    for (unsigned int i = 0; i < ImageContainer::monsterImages.size(); i++)
     {
         Monsters *m1 = new Monsters((i % 2) * 34, (i/2) * 34, i/2, facingRight, NULL);
         facingRight = !facingRight;
@@ -43,7 +44,12 @@ void TileDockView::initMonsters()
 
     void TileDockView::initItems()
     {
-
+        for (unsigned int i = 0; i < ImageContainer::itemImages.size(); i++)
+        {
+            Item *item = new Item((i % 2) * 34, (i/2) * 34, i, NULL);
+            item->setDeletable(false);
+            tileScene->addItem(item);
+        }
     }
 
 void TileDockView::mousePressEvent(QMouseEvent *event)

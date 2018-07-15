@@ -7,6 +7,7 @@
 #include <forward_list>
 #include "selectionrect.h"
 
+class Item;
 class QWheelEvent;
 class Player;
 class Tile;
@@ -35,6 +36,7 @@ public:
     void addLight(int x, int y, int radius, int r, int g, int b, int a);
     void addBouncer(int index, int x, int y);
     void addDoor(int dest, int x, int y);
+    void addItem(int x, int y, int type);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
@@ -43,6 +45,7 @@ public:
     void removeRope(Rope *rope);
     void removeBouncer(Bouncer *bouncer);
     void removeDoor(Door *door);
+    void removeItem(Item *item);
     int getPlayerX();
     int getPlayerY();
     void setPlayerX(int newX);
@@ -73,6 +76,7 @@ private:
     std::forward_list<Rope*> rope_list;
     std::forward_list<Bouncer*> bouncer_list;
     std::forward_list<Door*> door_list;
+     std::forward_list<Item*> item_list;
     Player *player;
     SelectionRect *selectionRect;
 };

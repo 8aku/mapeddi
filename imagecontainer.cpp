@@ -12,6 +12,8 @@ namespace ImageContainer
 
     std::vector<QImage*> monsterImages;
 
+    std::vector<QImage*>itemImages;
+
     QImage* playerImage;
     QImage* spikeImage;
     QImage* lightImage;
@@ -49,6 +51,8 @@ namespace ImageContainer
 
 
         playerImage = new QImage(QString::fromStdString("player1.png"));
+
+        itemImages.push_back(new QImage(QString::fromStdString("Items/1.png")));
 
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1.png")));
         monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1r.png")));

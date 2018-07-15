@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QSignalMapper>
 
+#include "item.h"
 #include "mainwindow.h"
 #include "bouncer.h"
 #include "door.h"
@@ -146,6 +147,11 @@ void MainWindow::open()
 
                     input += 3;
                 }
+                else if (currentType == 10)
+                {
+                    worldView->addItem(input[1], input[2], input[3]);
+                    input += 4;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -251,6 +257,13 @@ void MainWindow::save()
             out << 9;
             out << (*rope)->getX();
             out << (*rope)->getY();
+        }
+        for (auto item = worldView->item_list.begin(); item != worldView->item_list.end(); ++item)
+        {
+            out << 10;
+            out << (*item)->getX();
+            out << (*item)->getY();
+            out << (*item)->getType();
         }
         out << -1;
         outFile.flush();
@@ -567,7 +580,7 @@ void MainWindow::createDockWindows()
     itemDock = new QDockWidget(tr("Item Dock"), this);
 
     TileDockView *itemDockView = new TileDockView(this);
-
+    itemDockView->initItems();
     itemDock->setWidget(itemDockView);
     itemDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     itemDock ->setMinimumWidth(128);
@@ -666,7 +679,6 @@ void MainWindow::setAdding(int newType)
         MapEddi::currentObjectImage = ImageContainer::lightImage;
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
         MapEddi::selectedIndex = 0;
-
     }
 }
 

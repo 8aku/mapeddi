@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     bouncer.cpp \
     door.cpp \
     selectionrect.cpp \
-    rope.cpp
+    rope.cpp \
+    item.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -50,6 +51,7 @@ HEADERS  += mainwindow.h \
     bouncer.h \
     door.h \
     selectionrect.h \
-    rope.h
+    rope.h \
+    item.h
 
 FORMS    += mainwindow.ui

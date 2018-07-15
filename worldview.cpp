@@ -17,6 +17,7 @@
 #include "player.h"
 #include "worldview.h"
 #include "worldgrid.h"
+#include "item.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -80,6 +81,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == MonsterObject)
         {
             addMonster(p.x(), p.y(), MapEddi::selectedIndex, MapEddi::facingRight);
+        }
+        else if (MapEddi::currentlyAdding == ItemObject)
+        {
+            addItem(p.x(), p.y(), MapEddi::selectedIndex);
         }
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
@@ -183,6 +188,19 @@ void WorldView::addSpike(int x, int y)
     levelScene->addItem(spike);
 
     spike_list.push_front(spike);
+}
+
+void WorldView::addItem(int x, int y, int type)
+{
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    Item *item = new Item( x, y, type, this);
+
+    levelScene->addItem(item);
+
+   item_list.push_front(item);
+
 }
 
 void WorldView::addRope(int x, int y)
@@ -294,6 +312,10 @@ void WorldView::clearLevel()
     {
         removeBouncer(bouncer_list.front());
     }
+    while (!item_list.empty())
+    {
+        removeItem(item_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -342,6 +364,12 @@ void WorldView::removeDoor(Door *door)
 {
     levelScene->removeItem(door);
     door_list.remove(door);
+}
+
+void WorldView::removeItem(Item *item)
+{
+    levelScene->removeItem(item);
+    item_list.remove(item);
 }
 
 //Sets the grid size.
