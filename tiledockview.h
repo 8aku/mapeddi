@@ -13,6 +13,7 @@ public:
     void initMonsters();
     void initTiles();
     void initItems();
+    void initNpcs();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

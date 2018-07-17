@@ -17,6 +17,7 @@ namespace ImageContainer
     extern QImage* spikeImage;
     extern QImage* bouncerImage;
     extern QImage* lightImage;
+    extern std::vector<QImage*>npcImages;
     extern std::vector<QImage*> monsterImages;
     extern std::vector<QImage*>itemImages;
     extern std::ostringstream path;

@@ -42,6 +42,7 @@ private:
     QMenu *addMonsterMenu;
     QMenu *tilesetMenu;
 
+    QAction *addNpcs;
     QAction *addItem;
     QAction *addMonster;
     QAction *addTile;
@@ -86,6 +87,7 @@ private:
     QDockWidget *tileDock;
     QDockWidget *monsterDock;
     QDockWidget *itemDock;
+    QDockWidget *npcsDock;
 
     void createDockWindows();
     void createActions();

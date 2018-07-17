@@ -3,6 +3,7 @@
 #include "tile.h"
 #include "imagecontainer.h"
 #include "item.h"
+#include "npcs.h"
 #include <QDebug>
 
 TileDockView::TileDockView(QWidget *parent)
@@ -49,6 +50,16 @@ void TileDockView::initMonsters()
             Item *item = new Item((i % 2) * 34, (i/2) * 34, i, NULL);
             item->setDeletable(false);
             tileScene->addItem(item);
+        }
+    }
+
+    void TileDockView::initNpcs()
+    {
+        for (unsigned int i = 0; i < ImageContainer::npcImages.size(); i++)
+        {
+           Npcs *npc = new Npcs((i % 2) * 34, (i/2) * 34, i, NULL);
+            npc->setDeletable(false);
+            tileScene->addItem(npc);
         }
     }
 

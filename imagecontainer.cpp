@@ -14,6 +14,8 @@ namespace ImageContainer
 
     std::vector<QImage*>itemImages;
 
+    std::vector<QImage*>npcImages;
+
     QImage* playerImage;
     QImage* spikeImage;
     QImage* lightImage;
@@ -37,7 +39,7 @@ namespace ImageContainer
 
         for (int i = 0; i < tileNumber; i++)
         {
-            path << "tile_test" << ImageContainer::imageContainerTileset << "/" << i+1 << ".png";
+            path << "images/tiles" << ImageContainer::imageContainerTileset << "/" << i+1 << ".png";
             tileImages.push_back(new QImage(QString::fromStdString(path.str())));
             path.clear();
             path.str("");
@@ -50,34 +52,36 @@ namespace ImageContainer
         loadTextures();
 
 
-        playerImage = new QImage(QString::fromStdString("player1.png"));
+        playerImage = new QImage(QString::fromStdString("images/player1.png"));
 
-        itemImages.push_back(new QImage(QString::fromStdString("Items/1.png")));
+        itemImages.push_back(new QImage(QString::fromStdString("images/Items/1.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/1r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/1.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/1r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/2.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/2r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/2.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/2r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/3.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/3r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/3.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/3r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/4.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/4r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/4.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/4r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/5.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/5r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/5.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/5r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/6r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/6.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/6r.png")));
 
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/7.png")));
-        monsterImages.push_back(new QImage(QString::fromStdString("Monsters/7r.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/7.png")));
+        monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/7r.png")));
 
-         lightImage = new QImage(QString::fromStdString("light.png"));
-         spikeImage = new QImage(QString::fromStdString("spike.png"));
-         bouncerImage = new QImage(QString::fromStdString("images/bouncer.png"));
+        npcImages.push_back(new QImage(QString::fromStdString("images/npcs/1.png")));
+
+        lightImage = new QImage(QString::fromStdString("images/light.png"));
+         spikeImage = new QImage(QString::fromStdString("images/spike.png"));
+         bouncerImage = new QImage(QString::fromStdString("images/images/bouncer.png"));
     }
 }
 

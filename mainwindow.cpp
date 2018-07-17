@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QSignalMapper>
 
+#include "npcs.h"
 #include "item.h"
 #include "mainwindow.h"
 #include "bouncer.h"
@@ -152,6 +153,11 @@ void MainWindow::open()
                     worldView->addItem(input[1], input[2], input[3]);
                     input += 4;
                 }
+                else if (currentType == 11)
+                {
+                    worldView->addNpcs(input[1], input[2], input[3]);
+                    input += 4;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -265,6 +271,13 @@ void MainWindow::save()
             out << (*item)->getY();
             out << (*item)->getType();
         }
+        for (auto npcs = worldView->npcs_list.begin();npcs != worldView->npcs_list.end(); ++npcs)
+        {
+            out << 11;
+            out << (*npcs)->getX();
+            out << (*npcs)->getY();
+            out << (*npcs)->getType();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -342,6 +355,7 @@ void MainWindow::createActions()
     addMonster = new QAction(tr("Monster"), this);
     addTile = new QAction(tr("Tile"), this);
     addItem = new QAction(tr("Item"), this);
+    addNpcs = new QAction(tr("Npc :)"), this);
 
     QSignalMapper *addingMapper = new QSignalMapper(this);
 
@@ -356,6 +370,7 @@ void MainWindow::createActions()
     connect (addTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addItem, SIGNAL(triggered()), addingMapper, SLOT(map()));
+     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
@@ -368,6 +383,7 @@ void MainWindow::createActions()
     addingMapper->setMapping(addTile, TileObject);
     addingMapper->setMapping(addMonster, MonsterObject);
     addingMapper->setMapping(addItem, ItemObject);
+    addingMapper->setMapping(addNpcs, NpcObject);
 
     //monsters
     /*addSerg = new QAction(tr("Serg"), this);
@@ -447,6 +463,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addTile);
     addMenu->addAction(addMonster);
     addMenu->addAction(addItem);
+    addMenu->addAction(addNpcs);
 
    /* addMonsterMenu->addAction(addSerg);
     addMonsterMenu->addAction(addCrabber);
@@ -588,6 +605,21 @@ void MainWindow::createDockWindows()
     addDockWidget(Qt::LeftDockWidgetArea, itemDock);
 
     itemDock->setHidden(true);
+
+
+    //npcs dock-----------------------------------------------------------------------------
+
+    npcsDock = new QDockWidget(tr("Npc Dock"), this);
+
+    TileDockView *npcsDockView = new TileDockView(this);
+    npcsDockView->initNpcs();
+    npcsDock->setWidget(npcsDockView);
+
+    npcsDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    npcsDock ->setMinimumWidth(128);
+
+    addDockWidget(Qt::LeftDockWidgetArea, npcsDock);
+
 }
 
 //Determines whether or not a tile is solid.
@@ -633,23 +665,17 @@ void MainWindow::setAdding(int newType)
         tileDock->setHidden(false);
         monsterDock->setHidden(true);
         itemDock->setHidden(true);
+        npcsDock->setHidden(true);
 
         MapEddi::currentObjectImage = ImageContainer::tileImages.at(MapEddi::selectedIndex);
 
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }
-    /*else if (newType >= 100 && newType < 200)
-    {
-        MapEddi::selectedIndex = newType - 100;
-        MapEddi::currentlyAdding = MonsterObject;
-        MapEddi::currentObjectImage = ImageContainer::monsterImages.at(MapEddi::selectedIndex * 2);
-
-        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
-    }*/
     else if (MapEddi::currentlyAdding == MonsterObject)
     {
         tileDock->setHidden(true);
         itemDock->setHidden(true);
+        npcsDock->setHidden(true);
         monsterDock->setHidden(false);
     }
     else if (MapEddi::currentlyAdding == ItemObject)
@@ -657,6 +683,14 @@ void MainWindow::setAdding(int newType)
         itemDock->setHidden(false);
         monsterDock->setHidden(true);
         tileDock->setHidden(true);
+        npcsDock->setHidden(true);
+    }
+    else if (MapEddi::currentlyAdding == NpcObject)
+    {
+        npcsDock->setHidden(false);
+        monsterDock->setHidden(true);
+        tileDock->setHidden(true);
+        itemDock->setHidden(true);
     }
     else if (MapEddi::currentlyAdding == SpikeObject)
     {
