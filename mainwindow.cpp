@@ -150,7 +150,10 @@ void MainWindow::open()
                 }
                 else if (currentType == 10)
                 {
-                    worldView->addItem(input[1], input[2], input[3]);
+                    if (input[3] <= 0)
+                    {
+                        worldView->addItem(input[1], input[2], input[3]);
+                    }
                     input += 4;
                 }
                 else if (currentType == 11)
