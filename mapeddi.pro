@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     selectionrect.cpp \
     rope.cpp \
     item.cpp \
-    npcs.cpp
+    npcs.cpp \
+    save.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -54,6 +55,7 @@ HEADERS  += mainwindow.h \
     selectionrect.h \
     rope.h \
     item.h \
-    npcs.h
+    npcs.h \
+    save.h
 
 FORMS    += mainwindow.ui

@@ -13,6 +13,7 @@
 #include "monsters.h"
 #include "rope.h"
 #include "spike.h"
+#include "save.h"
 #include "tile.h"
 #include "player.h"
 #include "worldview.h"
@@ -94,6 +95,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
             addSpike(p.x(), p.y());
+        }
+        else if (MapEddi::currentlyAdding == SaveObject)
+        {
+            addSave(p.x(), p.y());
         }
         else if (MapEddi::currentlyAdding == RopeObject)
         {
@@ -193,6 +198,20 @@ void WorldView::addSpike(int x, int y)
     levelScene->addItem(spike);
 
     spike_list.push_front(spike);
+}
+
+void WorldView::addSave(int x, int y)
+{
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    Save *save = new Save(snappedX, snappedY, this);
+    levelScene->addItem(save);
+
+    save_list.push_front(save);
+
+    qDebug() << "adding save \n";
+
 }
 
 void WorldView::addItem(int x, int y, int type)
@@ -374,6 +393,12 @@ void WorldView::removeMonsters(Monsters *monster)
 {
     levelScene->removeItem(monster);
     monsters_list.remove(monster);
+}
+
+void WorldView::removeSave(Save *save)
+{
+    levelScene->removeItem(save);
+    save_list.remove(save);
 }
 
 void WorldView::removeLight(Light *light)

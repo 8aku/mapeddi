@@ -19,6 +19,7 @@ enum ObjectType
     DoorObject,
     RopeObject,
     NpcObject,
+    SaveObject,
     NUM_OBJECT_TYPES
 };
 

@@ -24,6 +24,7 @@
 #include "tile.h"
 #include "light.h"
 #include "monsters.h"
+#include "save.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -161,6 +162,11 @@ void MainWindow::open()
                     worldView->addNpcs(input[1], input[2], input[3]);
                     input += 4;
                 }
+                else if (currentType == 12)
+                {
+                    worldView->addSave(input[1], input[2]);
+                    input += 3;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -281,6 +287,12 @@ void MainWindow::save()
             out << (*npcs)->getY();
             out << (*npcs)->getType();
         }
+        for (auto save = worldView->save_list.begin(); save != worldView->save_list.end(); ++save)
+        {
+            out << 12;
+            out << (*save)->getX();
+            out << (*save)-> getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -354,6 +366,7 @@ void MainWindow::createActions()
     addRope = new QAction(tr("Rope"), this);
     addBouncer = new QAction(tr("Bouncer"), this);
     addDoor = new QAction(tr("Door"), this);
+    addSave = new QAction(tr("Save"), this);
 
     addMonster = new QAction(tr("Monster"), this);
     addTile = new QAction(tr("Tile"), this);
@@ -366,6 +379,7 @@ void MainWindow::createActions()
     connect(addFloatingTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addLight, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addSpike, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addSave, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addRope, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
@@ -373,12 +387,13 @@ void MainWindow::createActions()
     connect (addTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addItem, SIGNAL(triggered()), addingMapper, SLOT(map()));
-     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
     addingMapper->setMapping(addSpike, SpikeObject);
+    addingMapper->setMapping(addSave, SaveObject);
     addingMapper->setMapping(addRope, RopeObject);
     addingMapper->setMapping(addBouncer, BouncerObject);
     addingMapper->setMapping(addDoor, DoorObject);
@@ -459,6 +474,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
     addMenu->addAction(addSpike);
+    addMenu->addAction(addSave);
     addMenu->addAction(addRope);
     addMenu->addAction(addBouncer);
     addMenu->addAction(addDoor);
@@ -698,6 +714,12 @@ void MainWindow::setAdding(int newType)
     else if (MapEddi::currentlyAdding == SpikeObject)
     {
         MapEddi::currentObjectImage = ImageContainer::spikeImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+        MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == SaveObject)
+    {
+        MapEddi::currentObjectImage = ImageContainer::saveImage;
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
         MapEddi::selectedIndex = 0;
     }

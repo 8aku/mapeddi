@@ -53,6 +53,7 @@ private:
     QAction *addFloatingTile;
     QAction *addSpike;
     QAction *addRope;
+    QAction *addSave;
 
     /*QAction *addSerg;
     QAction *addPuff;

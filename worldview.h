@@ -20,6 +20,7 @@ class Spike;
 class Bouncer;
 class Door;
 class Npcs;
+class Save;
 
 class WorldView : public QGraphicsView
 {
@@ -39,6 +40,7 @@ public:
     void addDoor(int dest, int x, int y);
     void addItem(int x, int y, int type);
     void addNpcs(int x, int y, int type);
+    void addSave(int x, int y);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
@@ -49,6 +51,7 @@ public:
     void removeDoor(Door *door);
     void removeItem(Item *item);
     void removeNpcs(Npcs *npc);
+    void removeSave(Save *save);
     int getPlayerX();
     int getPlayerY();
     void setPlayerX(int newX);
@@ -81,6 +84,7 @@ private:
     std::forward_list<Door*> door_list;
     std::forward_list<Item*> item_list;
     std::forward_list<Npcs*> npcs_list;
+    std::forward_list<Save*>save_list;
     Player *player;
     SelectionRect *selectionRect;
 };
