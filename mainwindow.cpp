@@ -11,6 +11,7 @@
 #include "item.h"
 #include "mainwindow.h"
 #include "bouncer.h"
+#include "deathspot.h"
 #include "door.h"
 #include "tiledockview.h"
 #include "ui_mainwindow.h"
@@ -167,6 +168,11 @@ void MainWindow::open()
                     worldView->addSave(input[1], input[2]);
                     input += 3;
                 }
+                else if (currentType == 13)
+                {
+                    worldView->addDeathSpot(input[1], input[2]);
+                    input += 3;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -293,6 +299,12 @@ void MainWindow::save()
             out << (*save)->getX();
             out << (*save)-> getY();
         }
+        for (auto deathspot = worldView->deathspot_list.begin(); deathspot != worldView->deathspot_list.end(); deathspot++)
+        {
+            out << 13;
+            out << (*deathspot)->getX();
+            out << (*deathspot)->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -367,6 +379,7 @@ void MainWindow::createActions()
     addBouncer = new QAction(tr("Bouncer"), this);
     addDoor = new QAction(tr("Door"), this);
     addSave = new QAction(tr("Save"), this);
+    addDeathSpot = new QAction(tr("Death Spot :E"), this);
 
     addMonster = new QAction(tr("Monster"), this);
     addTile = new QAction(tr("Tile"), this);
@@ -388,7 +401,9 @@ void MainWindow::createActions()
     connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addItem, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addDeathSpot, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
+    addingMapper->setMapping(addDeathSpot, DeathSpotObject);
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
     addingMapper->setMapping(addLight, LightObject);
@@ -478,6 +493,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addRope);
     addMenu->addAction(addBouncer);
     addMenu->addAction(addDoor);
+    addMenu->addAction(addDeathSpot);
 
     addMenu->addAction(addTile);
     addMenu->addAction(addMonster);

@@ -5,6 +5,7 @@
 #include <QTimeLine>
 
 #include "bouncer.h"
+#include "deathspot.h"
 #include "door.h"
 #include "floatingtile.h"
 #include "light.h"
@@ -87,6 +88,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == ItemObject)
         {
             addItem(p.x(), p.y(), MapEddi::selectedIndex);
+        }
+        else if (MapEddi::currentlyAdding == DeathSpotObject)
+        {
+            addDeathSpot( p.x(), p.y() );
         }
         else if (MapEddi::currentlyAdding == NpcObject)
         {
@@ -212,6 +217,18 @@ void WorldView::addSave(int x, int y)
 
     qDebug() << "adding save \n";
 
+}
+
+void WorldView::addDeathSpot( int x, int y )
+{
+    int snappedX = x - ( x%snapToGrid );
+    int snappedY = y - ( y%snapToGrid );
+
+    DeathSpot *deathspot = new DeathSpot( snappedX, snappedY, this );
+
+    levelScene->addItem(deathspot);
+
+    deathspot_list.push_front(deathspot);
 }
 
 void WorldView::addItem(int x, int y, int type)
@@ -423,6 +440,11 @@ void WorldView::removeNpcs(Npcs *npcs)
 {
     levelScene->removeItem(npcs);
     npcs_list.remove(npcs);
+}
+void WorldView::removeDeathSpot(DeathSpot *deathspot)
+{
+    levelScene->removeItem( deathspot );
+    deathspot_list.remove( deathspot );
 }
 
 //Sets the grid size.

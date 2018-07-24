@@ -20,6 +20,7 @@ enum ObjectType
     RopeObject,
     NpcObject,
     SaveObject,
+    DeathSpotObject,
     NUM_OBJECT_TYPES
 };
 
