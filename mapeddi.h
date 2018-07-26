@@ -21,6 +21,7 @@ enum ObjectType
     NpcObject,
     SaveObject,
     DeathSpotObject,
+    PlatformObject,
     NUM_OBJECT_TYPES
 };
 

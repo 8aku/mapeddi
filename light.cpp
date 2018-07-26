@@ -122,6 +122,8 @@ void Light::setRadius(int radius)
     QToolTip::showText(lightParameters->mapToGlobal(point), QString::number(radius), lightParameters);
 
     worldView->refreshView();
+
+    qDebug() << radius << "\n";
 }
 
 void Light::setRed (int value)

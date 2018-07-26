@@ -22,6 +22,7 @@ class Door;
 class Npcs;
 class Save;
 class DeathSpot;
+class Platform;
 
 class WorldView : public QGraphicsView
 {
@@ -43,6 +44,8 @@ public:
     void addNpcs(int x, int y, int type);
     void addSave(int x, int y);
     void addDeathSpot( int x, int y );
+    void addPlatform( int x, int y );
+    void removePlatform (Platform *platform);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
@@ -89,6 +92,7 @@ private:
     std::forward_list<Npcs*> npcs_list;
     std::forward_list<Save*>save_list;
     std::forward_list<DeathSpot*>deathspot_list;
+    std::forward_list<Platform*>platform_list;
     Player *player;
     SelectionRect *selectionRect;
 };

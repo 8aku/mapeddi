@@ -21,6 +21,7 @@
 #include "worldgrid.h"
 #include "item.h"
 #include "npcs.h"
+#include "platform.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -108,6 +109,11 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == RopeObject)
         {
             addRope(p.x(), p.y());
+
+        }
+        else if (MapEddi::currentlyAdding == PlatformObject)
+        {
+            addPlatform(p.x(), p.y());
         }
         else if (MapEddi::currentlyAdding == BouncerObject)
         {
@@ -194,6 +200,17 @@ void WorldView::addTile(int x, int y, int index, bool isSolid, int layer)
     tile_list.push_front(tile);
 }
 
+void WorldView::addPlatform(int x, int y)
+{
+    int snappedX = x - (x%snapToGrid);
+    int snappedY = y - (y%snapToGrid);
+
+    Platform *platform = new Platform(snappedX, snappedY, this);
+    levelScene->addItem(platform);
+
+    platform_list.push_front(platform);
+}
+
 void WorldView::addSpike(int x, int y)
 {
     int snappedX = x - (x%snapToGrid);
@@ -266,6 +283,8 @@ void WorldView::addRope(int x, int y)
     levelScene->addItem(rope);
 
     rope_list.push_front(rope);
+
+    qDebug() << "adding rope " << snappedX << " " << snappedY << "\n";
 }
 
 void WorldView::addBouncer(int index, int x, int y)
@@ -374,6 +393,10 @@ void WorldView::clearLevel()
     {
         removeNpcs(npcs_list.front());
     }
+    while (!platform_list.empty())
+    {
+        removePlatform(platform_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -404,6 +427,12 @@ void WorldView::removeFloatingTile(FloatingTile *tile)
 {
     levelScene->removeItem(tile);
     floating_tile_list.remove(tile);
+}
+
+void WorldView::removePlatform(Platform *platform)
+{
+    levelScene->removeItem(platform);
+    platform_list.remove(platform);
 }
 
 void WorldView::removeMonsters(Monsters *monster)

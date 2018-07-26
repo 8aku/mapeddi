@@ -21,6 +21,7 @@ namespace ImageContainer
     QImage* lightImage;
     QImage* bouncerImage;
     QImage* saveImage;
+    QImage* platformImage;
     std::ostringstream path;
     int tileNumber = 75;
     int imageContainerTileset = 1;
@@ -82,6 +83,8 @@ namespace ImageContainer
         monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/8.png")));
 
         npcImages.push_back(new QImage(QString::fromStdString("images/npcs/1.png")));
+
+        platformImage = new QImage(QString::fromStdString("images/platforms/1.png"));
 
         lightImage = new QImage(QString::fromStdString("images/light.png"));
          spikeImage = new QImage(QString::fromStdString("images/spike.png"));

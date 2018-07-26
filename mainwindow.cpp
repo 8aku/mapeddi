@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QSignalMapper>
 
+#include "platform.h"
 #include "npcs.h"
 #include "item.h"
 #include "mainwindow.h"
@@ -145,7 +146,7 @@ void MainWindow::open()
                 }
                 else if (currentType == 9)
                 {
-                    qDebug() << "adding rope\n";
+                    //qDebug() << "adding rope\n";
                     worldView->addRope(input[1], input[2]);
 
                     input += 3;
@@ -171,6 +172,11 @@ void MainWindow::open()
                 else if (currentType == 13)
                 {
                     worldView->addDeathSpot(input[1], input[2]);
+                    input += 3;
+                }
+                else if (currentType == 14)
+                {
+                    worldView->addPlatform(input[1], input[2]);
                     input += 3;
                 }
                 else if (currentType == -1)
@@ -278,6 +284,7 @@ void MainWindow::save()
             out << 9;
             out << (*rope)->getX();
             out << (*rope)->getY();
+            qDebug() << "saving rope \n" << (*rope)->getX() << " " << (*rope)->getY() << "\n";
         }
         for (auto item = worldView->item_list.begin(); item != worldView->item_list.end(); ++item)
         {
@@ -304,6 +311,12 @@ void MainWindow::save()
             out << 13;
             out << (*deathspot)->getX();
             out << (*deathspot)->getY();
+        }
+        for (auto platform = worldView->platform_list.begin(); platform != worldView->platform_list.end(); platform++)
+        {
+            out << 14;
+            out << (*platform)->getX();
+            out << (*platform)->getY();
         }
         out << -1;
         outFile.flush();
@@ -371,6 +384,7 @@ void MainWindow::createActions()
     connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(selectLayer(int)));
 
     //adding menu
+    addPlatform = new QAction(tr("Platform"), this);
     addPlayer = new QAction(tr("Player"), this);
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
@@ -396,6 +410,7 @@ void MainWindow::createActions()
     connect (addRope, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect(addPlatform, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     connect (addTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
@@ -403,6 +418,7 @@ void MainWindow::createActions()
     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDeathSpot, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
+    addingMapper->setMapping(addPlatform, PlatformObject);
     addingMapper->setMapping(addDeathSpot, DeathSpotObject);
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
@@ -485,6 +501,7 @@ void MainWindow::createMenus()
     tilesetMenu = menuBar()->addMenu(tr("&Tileset"));
 
     addMenu = menuBar()->addMenu(tr("&Add"));
+    addMenu->addAction(addPlatform);
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
@@ -736,6 +753,12 @@ void MainWindow::setAdding(int newType)
     else if (MapEddi::currentlyAdding == SaveObject)
     {
         MapEddi::currentObjectImage = ImageContainer::saveImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
+        MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == PlatformObject)
+    {
+        MapEddi::currentObjectImage = ImageContainer::platformImage;
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
         MapEddi::selectedIndex = 0;
     }

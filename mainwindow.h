@@ -43,6 +43,7 @@ private:
     QMenu *tilesetMenu;
 
     QAction *addNpcs;
+    QAction *addPlatform;
     QAction *addItem;
     QAction *addMonster;
     QAction *addTile;
