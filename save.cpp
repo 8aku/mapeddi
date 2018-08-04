@@ -21,6 +21,8 @@ void Save::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->setBrush(QBrush(brushColour));
     painter->drawRect(boundingRect());*/
 
+    GameObject::paint(painter, option, widget);
+
 }
 
 

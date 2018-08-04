@@ -21,6 +21,8 @@ void Spike::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     QColor brushColour(200, 30, 90, 200);
     painter->setBrush(QBrush(brushColour));
     painter->drawRect(boundingRect());
+
+    GameObject::paint(painter, option, widget);
 }
 
 

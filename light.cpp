@@ -34,6 +34,8 @@ void Light::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     QColor brushColour(colour.r, colour.g, colour.b, colour.a);
     painter->setBrush(QBrush(brushColour));
     painter->drawEllipse(boundingRect());
+
+    GameObject::paint(painter, option, widget);
 }
 
 QRectF Light::boundingRect() const
@@ -122,8 +124,6 @@ void Light::setRadius(int radius)
     QToolTip::showText(lightParameters->mapToGlobal(point), QString::number(radius), lightParameters);
 
     worldView->refreshView();
-
-    qDebug() << radius << "\n";
 }
 
 void Light::setRed (int value)

@@ -7,7 +7,7 @@
 
 Npcs::Npcs()
 {
-
+    ;
 }
 
 Npcs::Npcs( int x, int y, int type, WorldView *worldView)
@@ -24,6 +24,8 @@ void Npcs::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->setBrush(brush);
 
     painter->drawImage(boundingRect(), *(ImageContainer::npcImages.at(type)), QRectF(0.0, 0.0, getW(), getH()));
+
+    GameObject::paint(painter, option, widget);
 
 }
 

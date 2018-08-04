@@ -7,7 +7,6 @@
 #include <QLabel>
 #include <QSignalMapper>
 
-#include "platform.h"
 #include "npcs.h"
 #include "item.h"
 #include "mainwindow.h"
@@ -26,6 +25,7 @@
 #include "tile.h"
 #include "light.h"
 #include "monsters.h"
+#include "platform.h"
 #include "save.h"
 #include <iostream>
 #include <fstream>
@@ -120,7 +120,7 @@ void MainWindow::open()
                 {
                     qDebug() << "adding monster\n";
                     qDebug() << "type: " << input[3] << "\n";
-                    if (input[3] < 7 && input[3] >= 0)
+                    if (input[3] < 8 && input[3] >= 0)
                         worldView->addMonster(input[1], input[2], input[3], input[4]);
 
                     input += 5;
@@ -146,14 +146,14 @@ void MainWindow::open()
                 }
                 else if (currentType == 9)
                 {
-                    //qDebug() << "adding rope\n";
+                    qDebug() << "adding rope\n";
                     worldView->addRope(input[1], input[2]);
 
                     input += 3;
                 }
                 else if (currentType == 10)
                 {
-                    if (input[3] <= 0)
+                    if (input[3] >= 0 && input[3] <= 2)
                     {
                         worldView->addItem(input[1], input[2], input[3]);
                     }
@@ -161,7 +161,10 @@ void MainWindow::open()
                 }
                 else if (currentType == 11)
                 {
-                    worldView->addNpcs(input[1], input[2], input[3]);
+                    if (input[3] < 0 || input[3] > 2)
+                        qDebug() << "Invalid NPC type: " << input[3] << "\n";
+                    else
+                        worldView->addNpcs(input[1], input[2], input[3]);
                     input += 4;
                 }
                 else if (currentType == 12)
@@ -176,8 +179,8 @@ void MainWindow::open()
                 }
                 else if (currentType == 14)
                 {
-                    worldView->addPlatform(input[1], input[2]);
-                    input += 3;
+                    worldView->addPlatform(input[1], input[2], input[3]);
+                    input += 4;
                 }
                 else if (currentType == -1)
                 {
@@ -219,29 +222,29 @@ void MainWindow::save()
         out <<worldView->getPlayerY();
 
         //save tiles
-        for (auto tile = worldView->tile_list.begin(); tile != worldView->tile_list.end(); ++tile)
+        for (auto tile : worldView->tile_list)
         {
-            out << 2;
-            out << (*tile)->getX();
-            out << (*tile)->getY();
-            out << (*tile)->getTileIndex();
-            out << (int)(*tile)->isSolid();
-            out << (*tile)->getLayer();
+            out << (int)2;
+            out << tile->getX();
+            out << tile->getY();
+            out << tile->getTileIndex();
+            out << (int)tile->isSolid();
+            out << tile->getLayer();
         }
 
-        for (auto tile = worldView->floating_tile_list.begin(); tile != worldView->floating_tile_list.end(); ++tile)
+        for (auto tile : worldView->floating_tile_list)
         {
-            out << 3;
-            out << (*tile)->getX();
-            out << (*tile)->getY();
-            out << (*tile)->getIndex();
-            out << (*tile)->getFloatHeight();
-            out << (*tile)->getMaxThrust();
+            out << (int)3;
+            out << tile->getX();
+            out << tile->getY();
+            out << tile->getIndex();
+            out << tile->getFloatHeight();
+            out << tile->getMaxThrust();
         }
 
         for (auto light = worldView->light_list.begin(); light != worldView->light_list.end(); ++light)
         {
-            out << 4;
+            out << (int)4;
             out << (*light)->getX();
             out << (*light)->getY();
             out << (*light)->getRadius();
@@ -250,73 +253,76 @@ void MainWindow::save()
             out << (*light)->getBlue();
             out << (*light)->getAlpha();
         }
-        for (auto monster = worldView->monsters_list.begin(); monster != worldView->monsters_list.end(); ++monster)
+        for (auto monster : worldView->monsters_list)
         {
-            out << 5;
-            out << (*monster)->getX();
-            out << (*monster)->getY();
-            out << (*monster)->getType();
-            qDebug() << "monster type saved: " << (*monster)->getType() << "\n";
-            out << (int)(*monster)->getFacingRight();
+            if (monster->getType() <= 7) {
+                out << (int)5;
+                out << monster->getX();
+                out << monster->getY();
+                out << monster->getType();
+                out << (int)monster->getFacingRight();
+            }
+            else
+                qDebug() << "not writing invalid monster: " << monster->getType() << "\n";
         }
-        for (auto spike = worldView->spike_list.begin(); spike != worldView->spike_list.end(); ++spike)
+        for (auto spike : worldView->spike_list)
         {
-            out << 6;
-            out << (*spike)->getX();
-            out << (*spike)->getY();
+            out << (int)6;
+            out << spike->getX();
+            out << spike->getY();
         }
-        for (auto bouncer = worldView->bouncer_list.begin(); bouncer != worldView->bouncer_list.end(); ++bouncer)
+        for (auto bouncer : worldView->bouncer_list)
         {
-            out << 7;
-            out << (*bouncer)->getIndex();
-            out << (*bouncer)->getX();
-            out << (*bouncer)->getY();
+            out << (int)7;
+            out << bouncer->getIndex();
+            out << bouncer->getX();
+            out << bouncer->getY();
         }
-        for (auto door = worldView->door_list.begin(); door != worldView->door_list.end(); ++door)
+        for (auto door : worldView->door_list)
         {
-            out << 8;
-            out << (*door)->getDest();
-            out << (*door)->getX();
-            out << (*door)->getY();
+            out << (int)8;
+            out << door->getDest();
+            out << door->getX();
+            out << door->getY();
         }
-        for (auto rope = worldView->rope_list.begin(); rope != worldView->rope_list.end(); ++rope)
+        for (auto rope : worldView->rope_list)
         {
-            out << 9;
-            out << (*rope)->getX();
-            out << (*rope)->getY();
-            qDebug() << "saving rope \n" << (*rope)->getX() << " " << (*rope)->getY() << "\n";
+            out << (int)9;
+            out << rope->getX();
+            out << rope->getY();
         }
-        for (auto item = worldView->item_list.begin(); item != worldView->item_list.end(); ++item)
+        for (auto item : worldView->item_list)
         {
-            out << 10;
-            out << (*item)->getX();
-            out << (*item)->getY();
-            out << (*item)->getType();
+            out << (int)10;
+            out << item->getX();
+            out << item->getY();
+            out << item->getType();
         }
-        for (auto npcs = worldView->npcs_list.begin();npcs != worldView->npcs_list.end(); ++npcs)
+        for (auto npcs : worldView->npcs_list)
         {
-            out << 11;
-            out << (*npcs)->getX();
-            out << (*npcs)->getY();
-            out << (*npcs)->getType();
+            out << (int)11;
+            out << npcs->getX();
+            out << npcs->getY();
+            out << npcs->getType();
         }
-        for (auto save = worldView->save_list.begin(); save != worldView->save_list.end(); ++save)
+        for (auto save : worldView->save_list)
         {
-            out << 12;
-            out << (*save)->getX();
-            out << (*save)-> getY();
+            out << (int)12;
+            out << save->getX();
+            out << save-> getY();
         }
-        for (auto deathspot = worldView->deathspot_list.begin(); deathspot != worldView->deathspot_list.end(); deathspot++)
+        for (auto deathspot : worldView->deathspot_list)
         {
-            out << 13;
-            out << (*deathspot)->getX();
-            out << (*deathspot)->getY();
+            out << (int)13;
+            out << deathspot->getX();
+            out << deathspot->getY();
         }
-        for (auto platform = worldView->platform_list.begin(); platform != worldView->platform_list.end(); platform++)
+        for (auto p : worldView->platform_list)
         {
-            out << 14;
-            out << (*platform)->getX();
-            out << (*platform)->getY();
+            out << (int)14;
+            out << p->getX();
+            out << p->getY();
+            out << p->getDx();
         }
         out << -1;
         outFile.flush();
@@ -384,13 +390,13 @@ void MainWindow::createActions()
     connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(selectLayer(int)));
 
     //adding menu
-    addPlatform = new QAction(tr("Platform"), this);
     addPlayer = new QAction(tr("Player"), this);
     addFloatingTile = new QAction(tr("Floating Tile"), this);
     addLight = new QAction(tr("Light"), this);
     addSpike = new QAction(tr("Spike"), this);
     addRope = new QAction(tr("Rope"), this);
     addBouncer = new QAction(tr("Bouncer"), this);
+    addPlatform = new QAction(tr("Platform"), this);
     addDoor = new QAction(tr("Door"), this);
     addSave = new QAction(tr("Save"), this);
     addDeathSpot = new QAction(tr("Death Spot :E"), this);
@@ -409,8 +415,8 @@ void MainWindow::createActions()
     connect (addSave, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addRope, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addBouncer, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addPlatform, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDoor, SIGNAL(triggered()), addingMapper, SLOT(map()));
-    connect(addPlatform, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     connect (addTile, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addMonster, SIGNAL(triggered()), addingMapper, SLOT(map()));
@@ -418,7 +424,6 @@ void MainWindow::createActions()
     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDeathSpot, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
-    addingMapper->setMapping(addPlatform, PlatformObject);
     addingMapper->setMapping(addDeathSpot, DeathSpotObject);
     addingMapper->setMapping(addPlayer, PlayerObject);
     addingMapper->setMapping(addFloatingTile, FloatingTileStart);
@@ -427,6 +432,7 @@ void MainWindow::createActions()
     addingMapper->setMapping(addSave, SaveObject);
     addingMapper->setMapping(addRope, RopeObject);
     addingMapper->setMapping(addBouncer, BouncerObject);
+    addingMapper->setMapping(addPlatform, PlatformObject);
     addingMapper->setMapping(addDoor, DoorObject);
 
     addingMapper->setMapping(addTile, TileObject);
@@ -501,7 +507,6 @@ void MainWindow::createMenus()
     tilesetMenu = menuBar()->addMenu(tr("&Tileset"));
 
     addMenu = menuBar()->addMenu(tr("&Add"));
-    addMenu->addAction(addPlatform);
     addMenu->addAction(addPlayer);
     addMenu->addAction(addFloatingTile);
     addMenu->addAction(addLight);
@@ -509,6 +514,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addSave);
     addMenu->addAction(addRope);
     addMenu->addAction(addBouncer);
+    addMenu->addAction(addPlatform);
     addMenu->addAction(addDoor);
     addMenu->addAction(addDeathSpot);
 
@@ -756,17 +762,16 @@ void MainWindow::setAdding(int newType)
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
         MapEddi::selectedIndex = 0;
     }
-    else if (MapEddi::currentlyAdding == PlatformObject)
-    {
-        MapEddi::currentObjectImage = ImageContainer::platformImage;
-        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
-        MapEddi::selectedIndex = 0;
-    }
     else if (MapEddi::currentlyAdding == BouncerObject)
     {
         MapEddi::currentObjectImage = ImageContainer::bouncerImage;
         currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
         MapEddi::selectedIndex = 0;
+    }
+    else if (MapEddi::currentlyAdding == PlatformObject)
+    {
+        MapEddi::currentObjectImage = ImageContainer::platformImage;
+        currentObject->setPixmap(QPixmap::fromImage(*MapEddi::currentObjectImage, Qt::AutoColor));
     }
     else if (MapEddi::currentlyAdding == DoorObject)
     {

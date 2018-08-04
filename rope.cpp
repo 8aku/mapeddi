@@ -21,6 +21,8 @@ void Rope::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     QColor brushColour(50, 130, 200, 200);
     painter->setBrush(QBrush(brushColour));
     painter->drawRect(boundingRect());
+
+    GameObject::paint(painter, option, widget);
 }
 
 

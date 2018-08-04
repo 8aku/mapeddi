@@ -47,6 +47,8 @@ void Bouncer::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
     QRectF cell (QRectF(getX(), getY(), getW(), getH()));
     painter->drawRect(cell);
+
+    GameObject::paint(painter, option, widget);
 }
 
 int Bouncer::getIndex()

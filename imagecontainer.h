@@ -18,7 +18,7 @@ namespace ImageContainer
     extern QImage* bouncerImage;
     extern QImage* lightImage;
     extern QImage* saveImage;
-    extern  QImage* platformImage;
+    extern QImage* platformImage;
     extern std::vector<QImage*>npcImages;
     extern std::vector<QImage*> monsterImages;
     extern std::vector<QImage*>itemImages;

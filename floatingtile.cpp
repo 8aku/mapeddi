@@ -37,6 +37,7 @@ void FloatingTile::paint (QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->drawImage(boundingRect(), *(ImageContainer::tileImages.at(index)), QRectF(0.0, 0.0, getW(), getH()));
 
+
     QPen pen;
     pen.setWidth(1);
     pen.setColor(QColor(255, 0, 100, 255));
@@ -44,6 +45,8 @@ void FloatingTile::paint (QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     QRectF cell (QRectF(getX(), floatHeight, getW(), getH()));
     painter->drawRect(cell);
+
+    GameObject::paint(painter, option, widget);
 }
 
 int FloatingTile::getFloatHeight()

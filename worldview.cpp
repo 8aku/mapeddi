@@ -12,6 +12,7 @@
 #include "levelscene.h"
 #include "mapeddi.h"
 #include "monsters.h"
+#include "platform.h"
 #include "rope.h"
 #include "spike.h"
 #include "save.h"
@@ -21,7 +22,6 @@
 #include "worldgrid.h"
 #include "item.h"
 #include "npcs.h"
-#include "platform.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -62,6 +62,9 @@ void WorldView::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton && event->modifiers() != Qt::ControlModifier)
     {
+        int snappedX = (int)p.x() - ((int)p.x()%snapToGrid);
+        int snappedY = (int)p.y() - ((int)p.y()%snapToGrid);
+
         if (MapEddi::currentlyAdding == TileObject)
         {
             addTile(p.x(), p.y());
@@ -75,7 +78,7 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == FloatingTileStart)
         {
             //change these default values to be editable
-            addFloatingTile(p.x(), p.y(), MapEddi::selectedIndex, p.y(), 10);
+            addFloatingTile(snappedX, snappedY, MapEddi::selectedIndex, p.y(), 10);
             levelScene->update();
         }
         else if (MapEddi::currentlyAdding == LightObject && event->modifiers() != Qt::ShiftModifier)
@@ -84,44 +87,43 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         }
         else if (MapEddi::currentlyAdding == MonsterObject)
         {
-            addMonster(p.x(), p.y(), MapEddi::selectedIndex, MapEddi::facingRight);
+            addMonster(snappedX, snappedY, MapEddi::selectedIndex, MapEddi::facingRight);
         }
         else if (MapEddi::currentlyAdding == ItemObject)
         {
-            addItem(p.x(), p.y(), MapEddi::selectedIndex);
+            addItem(snappedX, snappedY, MapEddi::selectedIndex);
         }
         else if (MapEddi::currentlyAdding == DeathSpotObject)
         {
-            addDeathSpot( p.x(), p.y() );
+            addDeathSpot( snappedX, snappedY );
         }
         else if (MapEddi::currentlyAdding == NpcObject)
         {
-            addNpcs(p.x(), p.y(), MapEddi::selectedIndex);
+            addNpcs(snappedX, snappedY, MapEddi::selectedIndex);
         }
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
-            addSpike(p.x(), p.y());
+            addSpike(snappedX, snappedY);
         }
         else if (MapEddi::currentlyAdding == SaveObject)
         {
-            addSave(p.x(), p.y());
+            addSave(snappedX, snappedY);
         }
         else if (MapEddi::currentlyAdding == RopeObject)
         {
-            addRope(p.x(), p.y());
-
-        }
-        else if (MapEddi::currentlyAdding == PlatformObject)
-        {
-            addPlatform(p.x(), p.y());
+            addRope(snappedX, snappedY);
         }
         else if (MapEddi::currentlyAdding == BouncerObject)
         {
-            addBouncer(MapEddi::selectedIndex, p.x(), p.y());
+            addBouncer(MapEddi::selectedIndex, snappedX, snappedY);
+        }
+        else if (MapEddi::currentlyAdding == PlatformObject)
+        {
+            addPlatform(snappedX, snappedY);
         }
         else if (MapEddi::currentlyAdding == DoorObject && event->modifiers() != Qt::ShiftModifier)
         {
-            addDoor(MapEddi::selectedIndex, p.x(), p.y());
+            addDoor(MapEddi::selectedIndex, snappedX, snappedY);
         }
     }
     else if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier)
@@ -151,24 +153,29 @@ void WorldView::mouseReleaseEvent(QMouseEvent *event)
             {
                 for (int j = 0; j < selectionRect->getH(); j += snapToGrid)
                 {
-                    addTile(startX + i, startY + j);
+                    if (MapEddi::currentlyAdding == TileObject)
+                        addTile(startX + i, startY + j);
+                    else if (MapEddi::currentlyAdding == RopeObject)
+                        addRope(startX + i, startY + j);
+                    else if (MapEddi::currentlyAdding == DeathSpotObject)
+                        addDeathSpot(startX + i, startY + j);
                 }
             }
         }
         else
         {
-            for (auto t : tile_list)
+            for (auto g : gameobject_list)
             {
-                if (t->getX() >= selectionRect->getX() &&
-                        t->getX() <= selectionRect->getX() + selectionRect->getW() &&
-                        t->getY() >= selectionRect->getY() &&
-                        t->getY() <= selectionRect->getY() + selectionRect->getH())
+                if (g->getX() >= selectionRect->getX() &&
+                        g->getX() <= selectionRect->getX() + selectionRect->getW() &&
+                        g->getY() >= selectionRect->getY() &&
+                        g->getY() <= selectionRect->getY() + selectionRect->getH())
                 {
-                    t->select();
+                    g->select();
                 }
                 else
                 {
-                    t->deselect();
+                    g->deselect();
                 }
             }
 
@@ -200,23 +207,9 @@ void WorldView::addTile(int x, int y, int index, bool isSolid, int layer)
     tile_list.push_front(tile);
 }
 
-void WorldView::addPlatform(int x, int y)
-{
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
-    Platform *platform = new Platform(snappedX, snappedY, this);
-    levelScene->addItem(platform);
-
-    platform_list.push_front(platform);
-}
-
 void WorldView::addSpike(int x, int y)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
-    Spike *spike = new Spike(snappedX, snappedY, this);
+    Spike *spike = new Spike(x, y, this);
     levelScene->addItem(spike);
 
     spike_list.push_front(spike);
@@ -224,10 +217,7 @@ void WorldView::addSpike(int x, int y)
 
 void WorldView::addSave(int x, int y)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
-    Save *save = new Save(snappedX, snappedY, this);
+    Save *save = new Save(x, y, this);
     levelScene->addItem(save);
 
     save_list.push_front(save);
@@ -238,10 +228,7 @@ void WorldView::addSave(int x, int y)
 
 void WorldView::addDeathSpot( int x, int y )
 {
-    int snappedX = x - ( x%snapToGrid );
-    int snappedY = y - ( y%snapToGrid );
-
-    DeathSpot *deathspot = new DeathSpot( snappedX, snappedY, this );
+    DeathSpot *deathspot = new DeathSpot( x, y, this );
 
     levelScene->addItem(deathspot);
 
@@ -250,9 +237,6 @@ void WorldView::addDeathSpot( int x, int y )
 
 void WorldView::addItem(int x, int y, int type)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
     Item *item = new Item( x, y, type, this);
 
     levelScene->addItem(item);
@@ -263,8 +247,6 @@ void WorldView::addItem(int x, int y, int type)
 
 void WorldView::addNpcs(int x, int y, int type)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
 
     Npcs *npcs = new Npcs( x, y, type, this);
 
@@ -276,33 +258,38 @@ void WorldView::addNpcs(int x, int y, int type)
 
 void WorldView::addRope(int x, int y)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
 
-    Rope *rope = new Rope(snappedX, snappedY, this);
+    Rope *rope = new Rope(x, y, this);
     levelScene->addItem(rope);
 
     rope_list.push_front(rope);
-
-    qDebug() << "adding rope " << snappedX << " " << snappedY << "\n";
 }
 
 void WorldView::addBouncer(int index, int x, int y)
 {
-    int snappedX = x - (x % snapToGrid);
-    int snappedY = y - (y % snapToGrid);
 
-    Bouncer *bouncer = new Bouncer(index, snappedX, snappedY, this);
+    Bouncer *bouncer = new Bouncer(index, x, y, this);
     levelScene->addItem(bouncer);
     bouncer_list.push_front(bouncer);
 }
 
+void WorldView::addPlatform(int x, int y)
+{
+    Platform *platform = new Platform(x, y, this);
+    levelScene->addItem(platform);
+    platform_list.push_front(platform);
+}
+
+void WorldView::addPlatform(int x, int y, int dx)
+{
+    Platform *platform = new Platform(x, y, dx, this);
+    levelScene->addItem(platform);
+    platform_list.push_front(platform);
+}
+
 void WorldView::addDoor(int dest, int x, int y)
 {
-    int snappedX = x - (x % snapToGrid);
-    int snappedY = y - (y % snapToGrid);
-
-    Door *door = new Door(dest, snappedX, snappedY, this);
+    Door *door = new Door(dest, x, y, this);
 
     levelScene->addItem(door);
     door_list.push_front(door);
@@ -312,9 +299,6 @@ void WorldView::addMonster(int x, int y, int type, bool facingRight)
 {
     Monsters *monster = new Monsters (x, y, type, facingRight, this);
 
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
     levelScene->addItem(monster);
 
     monsters_list.push_front(monster);
@@ -322,10 +306,7 @@ void WorldView::addMonster(int x, int y, int type, bool facingRight)
 
 void WorldView::addFloatingTile(int x, int y, int index, int floatHeight, int maxThrust)
 {
-    int snappedX = x - (x%snapToGrid);
-    int snappedY = y - (y%snapToGrid);
-
-    FloatingTile *floatingTile = new FloatingTile(snappedX, snappedY, snappedY, index, maxThrust, this);
+    FloatingTile *floatingTile = new FloatingTile(x, y, y, index, maxThrust, this);
 
     levelScene->addItem(floatingTile);
 
@@ -385,6 +366,10 @@ void WorldView::clearLevel()
     {
         removeBouncer(bouncer_list.front());
     }
+    while (!platform_list.empty())
+    {
+        removePlatform(platform_list.front());
+    }
     while (!item_list.empty())
     {
         removeItem(item_list.front());
@@ -392,10 +377,6 @@ void WorldView::clearLevel()
     while (!npcs_list.empty())
     {
         removeNpcs(npcs_list.front());
-    }
-    while (!platform_list.empty())
-    {
-        removePlatform(platform_list.front());
     }
 }
 
@@ -423,16 +404,16 @@ void WorldView::removeBouncer(Bouncer *bouncer)
     bouncer_list.remove(bouncer);
 }
 
-void WorldView::removeFloatingTile(FloatingTile *tile)
-{
-    levelScene->removeItem(tile);
-    floating_tile_list.remove(tile);
-}
-
 void WorldView::removePlatform(Platform *platform)
 {
     levelScene->removeItem(platform);
     platform_list.remove(platform);
+}
+
+void WorldView::removeFloatingTile(FloatingTile *tile)
+{
+    levelScene->removeItem(tile);
+    floating_tile_list.remove(tile);
 }
 
 void WorldView::removeMonsters(Monsters *monster)
@@ -529,23 +510,53 @@ void WorldView::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Delete)
     {
-        std::forward_list<Tile*> selectedTiles;
+        std::forward_list<GameObject*> selectedObjects;
 
-        for (auto t : tile_list)
+        for (auto t : gameobject_list)
         {
             if (t->isSelected())
             {
-                selectedTiles.push_front(t);
+                selectedObjects.push_front(t);
             }
         }
 
-        for (auto t : selectedTiles)
+        for (auto o : selectedObjects)
         {
-             removeTile(t);
-             delete t;
+            removeGameObject(o);
+
+                //having destructors remove from appropriate lists automatically
+                //would solve all of this dynamic casting...
+            if (Tile *t = dynamic_cast<Tile*>(o))
+                removeTile(t);
+            else if (Bouncer *b = dynamic_cast<Bouncer*>(o))
+                removeBouncer(b);
+            else if (DeathSpot *d = dynamic_cast<DeathSpot*>(o))
+                removeDeathSpot(d);
+            else if (Door *d = dynamic_cast<Door*>(o))
+                removeDoor(d);
+            else if (FloatingTile* f = dynamic_cast<FloatingTile*>(o))
+                removeFloatingTile(f);
+            else if (Item *i = dynamic_cast<Item*>(o))
+                removeItem(i);
+            else if (Light *l = dynamic_cast<Light*>(o))
+                removeLight(l);
+            else if (Monsters *m = dynamic_cast<Monsters*>(o))
+                removeMonsters(m);
+            else if (Npcs *n = dynamic_cast<Npcs*>(o))
+                removeNpcs(n);
+            else if (Platform* p = dynamic_cast<Platform*>(o))
+                removePlatform(p);
+            else if (Rope* r = dynamic_cast<Rope*>(o))
+                removeRope(r);
+            else if (Save *s = dynamic_cast<Save*>(o))
+                removeSave(s);
+            else if (Spike * s = dynamic_cast<Spike*>(o))
+                removeSpike(s);
+
+             delete o;
         }
 
-        selectedTiles.clear();
+        selectedObjects.clear();
     }
 }
 
@@ -581,5 +592,12 @@ void WorldView::scalingTime(qreal x)
  scale(factor, factor);
 }
 
+void WorldView::addGameObject(GameObject *object)
+{
+    gameobject_list.push_front(object);
+}
 
-
+void WorldView::removeGameObject(GameObject *object)
+{
+    gameobject_list.remove(object);
+}

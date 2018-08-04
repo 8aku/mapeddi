@@ -35,6 +35,7 @@ void Monsters::paint (QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     painter->drawImage(boundingRect(), *(ImageContainer::monsterImages.at((type * 2 )+ facingRight)), QRectF(0.0, 0.0, getW(), getH()));
 
+    GameObject::paint(painter, option, widget);
 }
 
 //Pure virtual method needed for implementation (QT specific).

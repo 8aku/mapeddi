@@ -22,11 +22,14 @@ GameObject::GameObject()
      layer = MapEddi::selectedLayer;
      this->worldView = worldView;
      selected = false;
+
+     if (worldView != NULL)
+        worldView->addGameObject(this);
  }
 
  GameObject::~GameObject()
  {
-     ;
+     worldView->removeGameObject(this);
  }
 
 

@@ -24,6 +24,8 @@ void Item::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     painter->drawImage(boundingRect(), *(ImageContainer::itemImages.at(type)), QRectF(0.0, 0.0, getW(), getH()));
 
+    GameObject::paint(painter, option, widget);
+
 }
 
 

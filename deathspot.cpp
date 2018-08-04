@@ -20,6 +20,8 @@ void DeathSpot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QColor brushColour(180, 10, 180, 200);
     painter->setBrush(QBrush(brushColour));
     painter->drawRect(boundingRect());
+
+    GameObject::paint(painter, option, widget);
 }
 
 QRectF DeathSpot::boundingRect() const

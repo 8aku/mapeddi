@@ -83,13 +83,14 @@ namespace ImageContainer
         monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/8.png")));
 
         npcImages.push_back(new QImage(QString::fromStdString("images/npcs/1.png")));
-
-        platformImage = new QImage(QString::fromStdString("images/platforms/1.png"));
+        npcImages.push_back(new QImage(QString::fromStdString("images/npcs/2.png")));
+        npcImages.push_back(new QImage(QString::fromStdString("images/npcs/3.png")));
 
         lightImage = new QImage(QString::fromStdString("images/light.png"));
          spikeImage = new QImage(QString::fromStdString("images/spike.png"));
          bouncerImage = new QImage(QString::fromStdString("images/images/bouncer.png"));
          saveImage = new QImage(QString::fromStdString("images/save.png"));
+         platformImage = new QImage(QString::fromStdString("images/platform.png"));
     }
 }
 

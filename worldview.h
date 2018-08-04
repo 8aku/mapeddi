@@ -18,11 +18,11 @@ class Monsters;
 class Rope;
 class Spike;
 class Bouncer;
+class Platform;
 class Door;
 class Npcs;
 class Save;
 class DeathSpot;
-class Platform;
 
 class WorldView : public QGraphicsView
 {
@@ -39,13 +39,13 @@ public:
     void addLight(int x, int y);
     void addLight(int x, int y, int radius, int r, int g, int b, int a);
     void addBouncer(int index, int x, int y);
+    void addPlatform(int x, int y);
+    void addPlatform(int x, int y, int dx);
     void addDoor(int dest, int x, int y);
     void addItem(int x, int y, int type);
     void addNpcs(int x, int y, int type);
     void addSave(int x, int y);
     void addDeathSpot( int x, int y );
-    void addPlatform( int x, int y );
-    void removePlatform (Platform *platform);
     void removeTile(Tile *tile);
     void removeFloatingTile (FloatingTile *tile);
     void removeLight (Light *light);
@@ -53,6 +53,7 @@ public:
     void removeSpike(Spike *spike);
     void removeRope(Rope *rope);
     void removeBouncer(Bouncer *bouncer);
+    void removePlatform(Platform *platform);
     void removeDoor(Door *door);
     void removeItem(Item *item);
     void removeNpcs(Npcs *npc);
@@ -67,6 +68,8 @@ public:
     void wheel ( QWheelEvent* event );
     void scalingTime(qreal x);
     void animFinished();
+    void addGameObject(GameObject* object);
+    void removeGameObject(GameObject* object);
 
     friend MainWindow;
 protected:
@@ -80,6 +83,7 @@ private:
     LevelScene *levelScene;
     WorldGrid *worldGrid;
     int snapToGrid;
+    std::forward_list<GameObject*>gameobject_list;
     std::forward_list<Tile*> tile_list;
     std::forward_list<FloatingTile*> floating_tile_list;
     std::forward_list<Light*>light_list;
@@ -87,12 +91,12 @@ private:
     std::forward_list<Spike*> spike_list;
     std::forward_list<Rope*> rope_list;
     std::forward_list<Bouncer*> bouncer_list;
+    std::forward_list<Platform*> platform_list;
     std::forward_list<Door*> door_list;
     std::forward_list<Item*> item_list;
     std::forward_list<Npcs*> npcs_list;
     std::forward_list<Save*>save_list;
     std::forward_list<DeathSpot*>deathspot_list;
-    std::forward_list<Platform*>platform_list;
     Player *player;
     SelectionRect *selectionRect;
 };
