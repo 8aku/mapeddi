@@ -23,7 +23,7 @@ namespace ImageContainer
     QImage* saveImage;
     QImage* platformImage;
     std::ostringstream path;
-    int tileNumber = 75;
+    int tileNumber = 80;
     int imageContainerTileset = 1;
 
     //load textures
