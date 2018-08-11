@@ -41,7 +41,7 @@ public:
     void addBouncer(int index, int x, int y);
     void addPlatform(int x, int y);
     void addPlatform(int x, int y, int dx);
-    void addDoor(int dest, int x, int y);
+    void addDoor(int destX, int destY, int dest, int x, int y);
     void addItem(int x, int y, int type);
     void addNpcs(int x, int y, int type);
     void addSave(int x, int y);

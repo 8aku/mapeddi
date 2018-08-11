@@ -123,7 +123,7 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         }
         else if (MapEddi::currentlyAdding == DoorObject && event->modifiers() != Qt::ShiftModifier)
         {
-            addDoor(MapEddi::selectedIndex, snappedX, snappedY);
+            addDoor(0, 0, MapEddi::selectedIndex, snappedX, snappedY);
         }
     }
     else if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier)
@@ -287,9 +287,9 @@ void WorldView::addPlatform(int x, int y, int dx)
     platform_list.push_front(platform);
 }
 
-void WorldView::addDoor(int dest, int x, int y)
+void WorldView::addDoor(int destX, int destY, int dest, int x, int y)
 {
-    Door *door = new Door(dest, x, y, this);
+    Door *door = new Door(destX, destY, dest, x, y, this);
 
     levelScene->addItem(door);
     door_list.push_front(door);

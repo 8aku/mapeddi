@@ -15,8 +15,10 @@ Door::Door()
     qDebug() << "Calling null constructor for Door";
 }
 
-Door::Door(int dest, int x, int y, WorldView *worldView) : GameObject(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, true, worldView)
+Door::Door(int destX, int destY, int dest, int x, int y, WorldView *worldView) : GameObject(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, true, worldView)
 {
+    this->destX = destX;
+    this->destY = destY;
     this->dest = dest;
 }
 
@@ -51,6 +53,16 @@ int Door::getDest()
     return dest;
 }
 
+int Door::getDestX()
+{
+    return destX;
+}
+
+int Door::getDestY()
+{
+    return destY;
+}
+
 void Door::mousePressEvent (QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier)
@@ -73,6 +85,34 @@ void Door::mousePressEvent (QGraphicsSceneMouseEvent *event)
 
        connect(destSlider, SIGNAL(valueChanged(int)), this, SLOT(setDest(int)));
 
+
+       QSlider *destXSlider = new QSlider(Qt::Horizontal, doorParameters);
+       destXSlider->resize(250, 32);
+       destXSlider->setMinimum(0);
+       destXSlider->setMaximum(20000);
+       destXSlider->move(0, 45);
+
+       QLabel *destXLabel = new QLabel(tr("destX"), doorParameters);
+        destXLabel->move(0,40);
+
+       connect(destXSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestX(int)));
+
+
+
+       QSlider *destYSlider = new QSlider(Qt::Horizontal, doorParameters);
+       destYSlider->resize(250, 32);
+       destYSlider->setMinimum(0);
+       destYSlider->setMaximum(20000);
+       destYSlider->move(0, 75);
+
+       QLabel *destYLabel = new QLabel(tr("destY"), doorParameters);
+       destYLabel->move(0,70);
+
+
+       connect(destYSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestY(int)));
+
+
+
         doorParameters->show();
     }
 
@@ -85,4 +125,20 @@ void Door::setDest(int dest)
 
     QPoint point(0, 0);
     QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(dest), doorParameters);
+}
+
+void Door::setDestX(int destX)
+{
+    this->destX = destX;
+
+    QPoint point(0, 0);
+    QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destX), doorParameters);
+}
+
+void Door::setDestY(int destY)
+{
+    this->destY = destY;
+
+    QPoint point(0, 0);
+    QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destY), doorParameters);
 }

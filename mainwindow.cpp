@@ -141,7 +141,7 @@ void MainWindow::open()
                 else if (currentType == 8)
                 {
                     qDebug() << "adding door\n";
-                    worldView->addDoor(input[1], input[2], input[3]);
+                    worldView->addDoor(input[1], input[2], input[3], input[4], input[5]);
                     input += 4;
                 }
                 else if (currentType == 9)
@@ -281,6 +281,8 @@ void MainWindow::save()
         for (auto door : worldView->door_list)
         {
             out << (int)8;
+            out << door->getDestX();
+            out << door->getDestY();
             out << door->getDest();
             out << door->getX();
             out << door->getY();
