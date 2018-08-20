@@ -142,7 +142,7 @@ void MainWindow::open()
                 {
                     qDebug() << "adding door\n";
                     worldView->addDoor(input[1], input[2], input[3], input[4], input[5]);
-                    input += 4;
+                    input += 6;
                 }
                 else if (currentType == 9)
                 {
@@ -161,7 +161,7 @@ void MainWindow::open()
                 }
                 else if (currentType == 11)
                 {
-                    if (input[3] < 0 || input[3] > 2)
+                    if (input[3] < 0 || input[3] > 3)
                         qDebug() << "Invalid NPC type: " << input[3] << "\n";
                     else
                         worldView->addNpcs(input[1], input[2], input[3]);

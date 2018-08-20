@@ -85,6 +85,7 @@ namespace ImageContainer
         npcImages.push_back(new QImage(QString::fromStdString("images/npcs/1.png")));
         npcImages.push_back(new QImage(QString::fromStdString("images/npcs/2.png")));
         npcImages.push_back(new QImage(QString::fromStdString("images/npcs/3.png")));
+        npcImages.push_back(new QImage(QString::fromStdString("images/npcs/4.png")));
 
         lightImage = new QImage(QString::fromStdString("images/light.png"));
          spikeImage = new QImage(QString::fromStdString("images/spike.png"));
