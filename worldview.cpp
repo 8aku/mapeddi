@@ -22,6 +22,7 @@
 #include "worldgrid.h"
 #include "item.h"
 #include "npcs.h"
+#include "slowspot.h"
 
 WorldView::WorldView(QWidget *parent)
     : QGraphicsView(parent)
@@ -104,6 +105,10 @@ void WorldView::mousePressEvent(QMouseEvent *event)
         else if (MapEddi::currentlyAdding == SpikeObject)
         {
             addSpike(snappedX, snappedY);
+        }
+        else if(MapEddi::currentlyAdding == SlowSpotObject)
+        {
+            addSlowSpot(snappedX, snappedY);
         }
         else if (MapEddi::currentlyAdding == SaveObject)
         {
@@ -213,6 +218,14 @@ void WorldView::addSpike(int x, int y)
     levelScene->addItem(spike);
 
     spike_list.push_front(spike);
+}
+
+void WorldView::addSlowSpot(int x, int y)
+{
+    SlowSpot *slowspot = new SlowSpot(x, y, this);
+    levelScene->addItem(slowspot);
+
+    slowspot_list.push_front(slowspot);
 }
 
 void WorldView::addSave(int x, int y)
@@ -378,6 +391,10 @@ void WorldView::clearLevel()
     {
         removeNpcs(npcs_list.front());
     }
+    while (!slowspot_list.empty())
+    {
+        removeSlowSpot(slowspot_list.front());
+    }
 }
 
 void WorldView::removeTile(Tile *tile)
@@ -438,6 +455,12 @@ void WorldView::removeDoor(Door *door)
 {
     levelScene->removeItem(door);
     door_list.remove(door);
+}
+
+void WorldView::removeSlowSpot(SlowSpot *slowspot)
+{
+    levelScene->removeItem(slowspot);
+    slowspot_list.remove(slowspot);
 }
 
 void WorldView::removeItem(Item *item)

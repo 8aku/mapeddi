@@ -56,6 +56,7 @@ private:
     QAction *addRope;
     QAction *addSave;
     QAction *addDeathSpot;
+    QAction *addSlowSpot;
 
     /*QAction *addSerg;
     QAction *addPuff;

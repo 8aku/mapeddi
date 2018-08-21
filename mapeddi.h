@@ -22,6 +22,7 @@ enum ObjectType
     SaveObject,
     DeathSpotObject,
     PlatformObject,
+    SlowSpotObject,
     NUM_OBJECT_TYPES
 };
 

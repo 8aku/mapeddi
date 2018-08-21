@@ -27,6 +27,7 @@
 #include "monsters.h"
 #include "platform.h"
 #include "save.h"
+#include "slowspot.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -182,6 +183,11 @@ void MainWindow::open()
                     worldView->addPlatform(input[1], input[2], input[3]);
                     input += 4;
                 }
+                else if (currentType == 15)
+                {
+                    worldView->addSlowSpot(input[1], input[2]);
+                    input += 3;
+                }
                 else if (currentType == -1)
                 {
                     done = true;
@@ -326,6 +332,12 @@ void MainWindow::save()
             out << p->getY();
             out << p->getDx();
         }
+        for (auto slowspot: worldView->slowspot_list)
+        {
+            out << (int)15;
+            out << slowspot->getX();
+            out << slowspot->getY();
+        }
         out << -1;
         outFile.flush();
         outFile.close();
@@ -402,6 +414,7 @@ void MainWindow::createActions()
     addDoor = new QAction(tr("Door"), this);
     addSave = new QAction(tr("Save"), this);
     addDeathSpot = new QAction(tr("Death Spot :E"), this);
+    addSlowSpot = new QAction(tr("slooooow spot"), this);
 
     addMonster = new QAction(tr("Monster"), this);
     addTile = new QAction(tr("Tile"), this);
@@ -425,6 +438,7 @@ void MainWindow::createActions()
     connect (addItem, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addNpcs, SIGNAL(triggered()), addingMapper, SLOT(map()));
     connect (addDeathSpot, SIGNAL(triggered()), addingMapper, SLOT(map()));
+    connect (addSlowSpot, SIGNAL(triggered()), addingMapper, SLOT(map()));
 
     addingMapper->setMapping(addDeathSpot, DeathSpotObject);
     addingMapper->setMapping(addPlayer, PlayerObject);
@@ -441,6 +455,7 @@ void MainWindow::createActions()
     addingMapper->setMapping(addMonster, MonsterObject);
     addingMapper->setMapping(addItem, ItemObject);
     addingMapper->setMapping(addNpcs, NpcObject);
+    addingMapper->setMapping(addSlowSpot, SlowSpotObject);
 
     //monsters
     /*addSerg = new QAction(tr("Serg"), this);
@@ -519,6 +534,7 @@ void MainWindow::createMenus()
     addMenu->addAction(addPlatform);
     addMenu->addAction(addDoor);
     addMenu->addAction(addDeathSpot);
+    addMenu->addAction(addSlowSpot);
 
     addMenu->addAction(addTile);
     addMenu->addAction(addMonster);
