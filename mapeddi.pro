@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     npcs.cpp \
     save.cpp \
     deathspot.cpp \
-    platform.cpp
+    platform.cpp \
+    slowspot.cpp
 
 HEADERS  += mainwindow.h \
     tile.h \
@@ -60,6 +61,7 @@ HEADERS  += mainwindow.h \
     npcs.h \
     save.h \
     deathspot.h \
-    platform.h
+    platform.h \
+    slowspot.h
 
 FORMS    += mainwindow.ui
