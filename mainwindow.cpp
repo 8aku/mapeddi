@@ -87,12 +87,14 @@ void MainWindow::open()
                 {
                     qDebug() << "adding environment settings\n";
 
-                    //level width/level height 2
-                    worldView->resize(input[2], input[3]);
+                    //level width/level height
+                    MapEddi::levelWidth = input[3];
+                    MapEddi::levelHeight = input[4];
+                    worldView->resize(MapEddi::levelWidth, MapEddi::levelHeight);
                     worldView->resizeGrid(MapEddi::levelWidth, MapEddi::levelHeight);
 
                     input += 5;
-
+                    qDebug() << "map width: " << MapEddi::levelWidth << "\n";
                 }
                 else if (currentType == 1)
                 {
@@ -103,28 +105,23 @@ void MainWindow::open()
                 }
                 else if (currentType == 2)
                 {
-                    qDebug() << "adding tile\n";
                     worldView->addTile(input[1], input[2], input[3], input[4], input[5]);
                     input +=6;
                 }
                 else if (currentType == 3)
                 {
-                    qDebug() << "adding floating tile\n";
                     worldView->addFloatingTile(input[1], input[2], input[3], input[4], input[5]);
 
                     input +=6;
                 }
                 else if (currentType == 4)
                 {
-                    qDebug() << "adding light\n";
                     worldView->addLight(input[1], input[2], input[3], input[4], input[5], input[6], input[7]);
 
                     input += 8;
                 }
                 else if (currentType == 5)
                 {
-                    qDebug() << "adding monster\n";
-                    qDebug() << "type: " << input[3] << "\n";
                     if (input[3] < 8 && input[3] >= 0)
                         worldView->addMonster(input[1], input[2], input[3], input[4]);
 
@@ -132,26 +129,22 @@ void MainWindow::open()
                 }
                 else if (currentType == 6)
                 {
-                    qDebug() << "adding spike\n";
                     worldView->addSpike(input[1], input[2]);
 
                     input += 3;
                 }
                 else if (currentType == 7)
                 {
-                    qDebug() << "adding bouncer\n";
                     worldView->addBouncer(input[1], input[2], input[3]);
                     input += 4;
                 }
                 else if (currentType == 8)
                 {
-                    qDebug() << "adding door\n";
                     worldView->addDoor(input[1], input[2], input[3], input[4], input[5], (bool)input[6]);
                     input += 7;
                 }
                 else if (currentType == 9)
                 {
-                    qDebug() << "adding rope\n";
                     worldView->addRope(input[1], input[2]);
 
                     input += 3;
@@ -214,15 +207,16 @@ void MainWindow::save()
         QDataStream out (&outFile);
         out.setByteOrder(QDataStream::LittleEndian);
 
-        //save level header
+        //save level header 0
         out << 0;
-        //background 0
+        //background 1
         out << 0;
-        //tile set 1
+        //tile set 2
         out << tileset;
-        //level width 2
+        //level width 3
         out << MapEddi::levelWidth;
-        //level height 3
+        qDebug() << "saved width: " << MapEddi::levelWidth;
+        //level height 4
         out << MapEddi::levelHeight;
 
         out << 1;

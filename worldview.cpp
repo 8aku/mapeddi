@@ -248,9 +248,6 @@ void WorldView::addSave(int x, int y)
     levelScene->addItem(save);
 
     save_list.push_front(save);
-
-    qDebug() << "adding save \n";
-
 }
 
 void WorldView::addDeathSpot( int x, int y )
