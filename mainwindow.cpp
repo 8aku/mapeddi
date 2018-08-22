@@ -87,6 +87,11 @@ void MainWindow::open()
                 if (currentType == 0)
                 {
                     qDebug() << "adding environment settings\n";
+
+                    //level width/level height 2
+                    worldView->resize(input[2], input[3]);
+                    worldView->resizeGrid(MapEddi::levelWidth, MapEddi::levelHeight);
+
                     input += 5;
 
                 }
@@ -142,8 +147,8 @@ void MainWindow::open()
                 else if (currentType == 8)
                 {
                     qDebug() << "adding door\n";
-                    worldView->addDoor(input[1], input[2], input[3], input[4], input[5]);
-                    input += 6;
+                    worldView->addDoor(input[1], input[2], input[3], input[4], input[5], (bool)input[6]);
+                    input += 7;
                 }
                 else if (currentType == 9)
                 {
@@ -292,6 +297,7 @@ void MainWindow::save()
             out << door->getDest();
             out << door->getX();
             out << door->getY();
+            out << (int)door->getLocked();
         }
         for (auto rope : worldView->rope_list)
         {
@@ -355,6 +361,9 @@ void MainWindow::saveas()
 //Creates actions for drop-down menu.
 void MainWindow::createActions()
 {
+    levelSettings = new QAction(tr("&Level Size"), this);
+    connect(levelSettings, SIGNAL(triggered()), this, SLOT(editSettings()));
+
     newAction = new QAction(tr("&New"), this);
     newAction->setShortcuts(QKeySequence::New);
     newAction->setStatusTip(tr("Create a new level file"));
@@ -516,12 +525,64 @@ void MainWindow::createActions()
     connect(tileMapper, SIGNAL(mapped(int)), this, SLOT(setTileset(int)));
 }
 
+void MainWindow::editSettings()
+{
+    QWidget *levelParameters = new QWidget(this);
+    levelParameters ->setWindowFlags(Qt::Dialog);
+    levelParameters->resize(256, 250);
+    levelParameters->setMaximumSize(256, 250);
+    levelParameters->setMinimumSize(256, 250);
+    levelParameters->setWindowTitle("level parameters");
+
+   QSlider *levelWidth = new QSlider(Qt::Horizontal, levelParameters);
+   levelWidth->resize(250, 32);
+   levelWidth->setMinimum(160);
+   levelWidth->setMaximum(160000);
+   levelWidth->move(0, 15);
+   levelWidth->setValue(MapEddi::levelWidth);
+
+    QLabel *widthLabel = new QLabel(tr("Width"), levelParameters);
+
+   connect(levelWidth, SIGNAL(valueChanged(int)), this, SLOT(setLevelWidth(int)));
+
+   QSlider *levelHeight = new QSlider(Qt::Horizontal, levelParameters);
+   levelHeight->resize(250, 32);
+   levelHeight->setMinimum(160);
+   levelHeight->setMaximum(160000);
+   levelHeight->move(0, 45);
+    levelHeight->setValue(MapEddi::levelHeight);
+
+   QLabel *heightLabel = new QLabel(tr("Height"), levelParameters);
+    heightLabel->move(0,40);
+
+   connect(levelHeight, SIGNAL(valueChanged(int)), this, SLOT(setLevelHeight(int)));
+
+    levelParameters->show();
+}
+
+void MainWindow::setLevelHeight(int height)
+{
+    MapEddi::levelHeight = height;
+
+    worldView->resize(MapEddi::levelWidth, MapEddi::levelHeight);
+    worldView->resizeGrid(MapEddi::levelWidth, MapEddi::levelHeight);
+}
+
+void MainWindow::setLevelWidth(int width)
+{
+    MapEddi::levelWidth = width;
+
+    worldView->resize(MapEddi::levelWidth, MapEddi::levelHeight);
+    worldView->resizeGrid(MapEddi::levelWidth, MapEddi::levelHeight);
+}
+
 //Creates drop-down menus.
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     layerMenu = menuBar()->addMenu(tr("&Layer"));
     tilesetMenu = menuBar()->addMenu(tr("&Tileset"));
+
 
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMenu->addAction(addPlayer);
@@ -555,6 +616,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(saveAsAction);
+    fileMenu->addAction(levelSettings);
 
     layerMenu->addAction(layer0);
     layerMenu->addAction(layer1);

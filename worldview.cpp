@@ -57,6 +57,13 @@ WorldView::WorldView(QWidget *parent)
      selectionRect = nullptr;
 }
 
+void WorldView::resizeGrid(int width, int height)
+{
+    worldGrid->resize(width, height);
+    levelScene->setSceneRect(0, 0, width, height);
+    levelScene->update();
+}
+
 void WorldView::mousePressEvent(QMouseEvent *event)
 {
      QPointF p = mapToScene(event->pos());
@@ -300,9 +307,14 @@ void WorldView::addPlatform(int x, int y, int dx)
     platform_list.push_front(platform);
 }
 
-void WorldView::addDoor(int destX, int destY, int dest, int x, int y)
+void WorldView::addDoor(int destX, int destY, int dest, int x, int y) {
+    addDoor(destX, destY, dest, x, y, false);
+}
+
+void WorldView::addDoor(int destX, int destY, int dest, int x, int y, bool locked)
 {
     Door *door = new Door(destX, destY, dest, x, y, this);
+    door->setLocked(locked);
 
     levelScene->addItem(door);
     door_list.push_front(door);

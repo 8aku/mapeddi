@@ -12,6 +12,7 @@ public:
 
     QRectF boundingRect() const;
 
+    void resize(int width, int height);
     void setScale (int newScale);
 
 private:

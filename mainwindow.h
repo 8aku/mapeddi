@@ -42,6 +42,7 @@ private:
     QMenu *addMonsterMenu;
     QMenu *tilesetMenu;
 
+    QAction *levelSettings;
     QAction *addNpcs;
     QAction *addItem;
     QAction *addMonster;
@@ -100,7 +101,9 @@ private:
     void loadTile();
     void loadLevelHeader();
 
+
 private slots:
+    void editSettings();
     void newFile();
     void open();
     void save();
@@ -110,6 +113,8 @@ private slots:
     void setSolid();
     void setAdding(int newType);
     void setTileset(int tileset);
+    void setLevelWidth(int width);
+    void setLevelHeight(int height);
 };
 
 #endif // MAINWINDOW_H

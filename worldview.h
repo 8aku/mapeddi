@@ -31,6 +31,7 @@ class WorldView : public QGraphicsView
 public:
     explicit WorldView(QWidget *parent = 0);
     void setGridSize(int gridSize);
+    void resizeGrid(int width, int height);
     void addTile(int x, int y);
     void addTile(int x, int y, int index, bool isSolid, int layer);
     void addSpike(int x, int y);
@@ -43,6 +44,7 @@ public:
     void addPlatform(int x, int y);
     void addPlatform(int x, int y, int dx);
     void addDoor(int destX, int destY, int dest, int x, int y);
+    void addDoor(int destX, int destY, int dest, int x, int y, bool locked);
     void addItem(int x, int y, int type);
     void addNpcs(int x, int y, int type);
     void addSave(int x, int y);

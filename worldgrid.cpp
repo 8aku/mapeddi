@@ -21,6 +21,12 @@ void WorldGrid::setScale(int newScale)
     scale = newScale;
 }
 
+void WorldGrid::resize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+}
+
 //Draws the World Grid.
 void WorldGrid::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {

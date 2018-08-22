@@ -19,16 +19,20 @@ public:
     int getDest();
     int getDestX();
     int getDestY();
+    bool getLocked();
+    void setLocked(bool locked);
 
 private slots:
     void setDest(int dest);
     void setDestX(int destX);
     void setDestY(int destY);
+    void toggleLocked();
 
 protected:
     void mousePressEvent (QGraphicsSceneMouseEvent *event);
 
 private:
+    bool locked;
     int destX;
     int destY;
     int dest;              //destination level
