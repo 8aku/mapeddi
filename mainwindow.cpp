@@ -35,8 +35,7 @@
 #include <QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
     worldView = new WorldView(this);
     setCentralWidget(worldView);

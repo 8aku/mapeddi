@@ -5,6 +5,7 @@
 #include <QToolTip>
 #include "worldview.h"
 #include "door.h"
+#include "doorwindow.h"
 #include "imagecontainer.h"
 
 #define DEFAULT_WIDTH (16)
@@ -26,7 +27,7 @@ Door::Door(int destX, int destY, int dest, int x, int y, WorldView *worldView) :
 Door::~Door()
 {
     if (worldView)
-        worldView->removeDoor(this);
+            worldView->removeDoor(this);
 }
 
 //Pure virtual method needed for implementation (QT specific).
@@ -81,60 +82,15 @@ void Door::setLocked(bool locked)
 
 void Door::mousePressEvent (QGraphicsSceneMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier)
+    if (event->button() == Qt::LeftButton)
+    //if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier)
     {
-        doorParameters = new QWidget(worldView);
-        doorParameters->setWindowFlags(Qt::Dialog);
-        doorParameters->resize(256, 250);
-        doorParameters->setMaximumSize(256, 250);
-        doorParameters->setMinimumSize(256, 250);
-        doorParameters->setWindowTitle("door parameters");
-
-       QSlider *destSlider = new QSlider(Qt::Horizontal, doorParameters);
-       destSlider->resize(250, 32);
-       destSlider->setMinimum(0);
-       destSlider->setMaximum(64);
-       destSlider->move(0, 15);
-        destSlider->setValue(dest);
-       QLabel *destLabel = new QLabel(tr("dest"), doorParameters);
-
-
-       connect(destSlider, SIGNAL(valueChanged(int)), this, SLOT(setDest(int)));
-
-
-       QSlider *destXSlider = new QSlider(Qt::Horizontal, doorParameters);
-       destXSlider->resize(250, 32);
-       destXSlider->setMinimum(0);
-       destXSlider->setMaximum(20000);
-       destXSlider->move(0, 45);
-        destXSlider->setValue(destX);
-       QLabel *destXLabel = new QLabel(tr("destX"), doorParameters);
-        destXLabel->move(0,40);
-
-       connect(destXSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestX(int)));
-
-
-
-       QSlider *destYSlider = new QSlider(Qt::Horizontal, doorParameters);
-       destYSlider->resize(250, 32);
-       destYSlider->setMinimum(0);
-       destYSlider->setMaximum(20000);
-       destYSlider->move(0, 75);
-        destYSlider->setValue(destY);
-       QLabel *destYLabel = new QLabel(tr("destY"), doorParameters);
-       destYLabel->move(0,70);
-
-       connect(destYSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestY(int)));
-
-
-       QCheckBox *isLocked = new QCheckBox(doorParameters);
-       isLocked->move(0, 100);
-       isLocked->setChecked(locked);
-
-       connect(isLocked, SIGNAL(stateChanged(int)), this, SLOT(toggleLocked()));
-
-        doorParameters->show();
+        qDebug() << "this: " << this << "\n";
+        doorParameters = new DoorWindow(this, worldView);
     }
+
+   // if (event->button() == Qt::LeftButton)
+    //    qDebug() << "left click: " << this << "\n";
 
     GameObject::mousePressEvent(event);
 }
@@ -149,7 +105,7 @@ void Door::setDest(int dest)
     this->dest = dest;
 
     QPoint point(0, 0);
-    QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(dest), doorParameters);
+    //QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(dest), doorParameters);
 }
 
 void Door::setDestX(int destX)
@@ -157,7 +113,7 @@ void Door::setDestX(int destX)
     this->destX = destX;
 
     QPoint point(0, 0);
-    QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destX), doorParameters);
+    //QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destX), doorParameters);
 }
 
 void Door::setDestY(int destY)
@@ -165,5 +121,5 @@ void Door::setDestY(int destY)
     this->destY = destY;
 
     QPoint point(0, 0);
-    QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destY), doorParameters);
+    //QToolTip::showText(doorParameters->mapToGlobal(point), QString::number(destY), doorParameters);
 }

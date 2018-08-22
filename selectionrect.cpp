@@ -31,8 +31,6 @@ QRectF SelectionRect::boundingRect() const
 //Draws a tile. If solid, a border will appear around the tile.
 void SelectionRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug() << "I paint u \n";
-
     QColor brushColour(60, 20, 150, 100);
     painter->fillRect(boundingRect(), QBrush(brushColour));
 }

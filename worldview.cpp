@@ -48,7 +48,7 @@ WorldView::WorldView(QWidget *parent)
      scale(qreal(1.0), qreal(1.0));
      setMinimumSize(480, 350);
 
-     snapToGrid = 32;
+     snapToGrid = 16;
 
      player = new Player;
 
@@ -142,14 +142,14 @@ void WorldView::mousePressEvent(QMouseEvent *event)
     {
         if (selectionRect == nullptr)
         {
-            qDebug() << "selection rect is nullptr";
-
             selectionRect = new SelectionRect(p.x(), p.y());
             levelScene->addItem(selectionRect);
             selectionRect->update();
             levelScene->update();
         }
     }
+
+    QGraphicsView::mousePressEvent(event);
 }
 
 void WorldView::mouseReleaseEvent(QMouseEvent *event)
@@ -173,6 +173,10 @@ void WorldView::mouseReleaseEvent(QMouseEvent *event)
                         addDeathSpot(startX + i, startY + j);
                 }
             }
+
+            levelScene->removeItem(selectionRect);
+            delete selectionRect;
+            selectionRect = nullptr;
         }
         else
         {
@@ -191,11 +195,14 @@ void WorldView::mouseReleaseEvent(QMouseEvent *event)
                 }
             }
 
+            levelScene->removeItem(selectionRect);
             delete selectionRect;
             selectionRect = nullptr;
             levelScene->update();
         }
     }
+
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
 void WorldView::refreshView() {
@@ -317,6 +324,7 @@ void WorldView::addDoor(int destX, int destY, int dest, int x, int y, bool locke
     door->setLocked(locked);
 
     levelScene->addItem(door);
+    qDebug() << "door scene: " <<  door->scene() << "\n";
     door_list.push_front(door);
 }
 

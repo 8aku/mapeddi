@@ -22,14 +22,14 @@ public:
     bool getLocked();
     void setLocked(bool locked);
 
-private slots:
+    virtual void mousePressEvent (QGraphicsSceneMouseEvent *event);
+
+public slots:
     void setDest(int dest);
     void setDestX(int destX);
     void setDestY(int destY);
     void toggleLocked();
 
-protected:
-    void mousePressEvent (QGraphicsSceneMouseEvent *event);
 
 private:
     bool locked;

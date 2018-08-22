@@ -26,12 +26,12 @@ public:
     int getY() const;
     int getLayer();
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void mousePressEvent (QGraphicsSceneMouseEvent *event);
+    virtual void mousePressEvent (QGraphicsSceneMouseEvent *event);
 
 protected:
     WorldView *worldView;
      bool deletable;
-
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     bool selected;

@@ -109,7 +109,7 @@ GameObject::GameObject()
  //Places or deletes the selected tile.
  void GameObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
-     if (event->button() == Qt::RightButton && isDeletable())
+     if (event->button() == Qt::RightButton && isDeletable() && event->modifiers() != Qt::ShiftModifier)
      {
          delete this;
      }
@@ -117,6 +117,11 @@ GameObject::GameObject()
      {
          toggleSelected();
      }
+ }
+
+ void GameObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+ {
+     ;
  }
 
  int GameObject::getLayer() {
