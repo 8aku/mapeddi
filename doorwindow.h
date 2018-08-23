@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+class QIntValidator;
 class Door;
 
 class DoorWindow : public QWidget
@@ -15,12 +16,13 @@ public:
 signals:
 
 public slots:
-    void setDest(int dest);
-    void setDestX(int destX);
-    void setDestY(int destY);
+    void setDest(const QString &dest);
+    void setDestX(const QString &dest);
+    void setDestY(const QString &dest);
     void toggleLocked();
 
 private:
+    QIntValidator* validator;
     Door *door;
 };
 

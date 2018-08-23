@@ -31,6 +31,7 @@ namespace MapEddi
     extern int selectedIndex;
     extern int selectedLayer;
     extern bool solidSelected;
+    extern int background;
     extern QImage *currentObjectImage;
     extern ObjectType currentlyAdding;
     extern QString currentFile;
@@ -39,6 +40,7 @@ namespace MapEddi
     extern int mouse_x;
     extern int mouse_y;
     extern bool facingRight;
+
 }
 
 #endif // MAPEDDI_H

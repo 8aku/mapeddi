@@ -151,7 +151,7 @@ void MainWindow::open()
                 }
                 else if (currentType == 10)
                 {
-                    if (input[3] >= 0 && input[3] <= 2)
+                    if (input[3] >= 0 && input[3] <= 3)
                     {
                         worldView->addItem(input[1], input[2], input[3]);
                     }
@@ -550,6 +550,17 @@ void MainWindow::editSettings()
 
    connect(levelHeight, SIGNAL(valueChanged(int)), this, SLOT(setLevelHeight(int)));
 
+    QSlider *background = new QSlider(Qt::Horizontal, levelParameters);
+    background->resize(250, 32);
+    background->setMinimum(0);
+    background->setMaximum(3);
+    background->move(0, 75);
+     levelHeight->setValue(MapEddi::levelHeight);
+    QLabel *backgroundLabel = new QLabel(tr("Background"), levelParameters);
+    backgroundLabel->move(0,70);
+
+    connect(background, SIGNAL(valueChanged(int)), this, SLOT(setBackground(int)));
+
     levelParameters->show();
 }
 
@@ -567,6 +578,11 @@ void MainWindow::setLevelWidth(int width)
 
     worldView->resize(MapEddi::levelWidth, MapEddi::levelHeight);
     worldView->resizeGrid(MapEddi::levelWidth, MapEddi::levelHeight);
+}
+
+void MainWindow::setBackground(int bg)
+{
+    MapEddi::background = bg;
 }
 
 //Creates drop-down menus.

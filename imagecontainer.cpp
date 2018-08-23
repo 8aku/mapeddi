@@ -59,6 +59,7 @@ namespace ImageContainer
         itemImages.push_back(new QImage(QString::fromStdString("images/Items/1.png")));
         itemImages.push_back(new QImage(QString::fromStdString("images/Items/2.png")));
         itemImages.push_back(new QImage(QString::fromStdString("images/Items/3.png")));
+        itemImages.push_back(new QImage(QString::fromStdString("images/Items/4.png")));
 
         monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/1.png")));
         monsterImages.push_back(new QImage(QString::fromStdString("images/Monsters/1r.png")));

@@ -115,6 +115,7 @@ private slots:
     void setTileset(int tileset);
     void setLevelWidth(int width);
     void setLevelHeight(int height);
+    void setBackground(int bg);
 };
 
 #endif // MAINWINDOW_H

@@ -6,7 +6,8 @@
 #include <QSlider>
 #include <QLabel>
 #include <QCheckBox>
-
+#include <QLineEdit>
+#include <QIntValidator>
 #include "doorwindow.h"
 #include "door.h"
 
@@ -18,6 +19,7 @@ DoorWindow::DoorWindow(QWidget *parent) : QWidget(parent)
 DoorWindow::~DoorWindow()
 {
     qDebug() << "Window deleted\n";
+    delete validator;
     disconnect();
 }
 
@@ -32,46 +34,41 @@ DoorWindow::DoorWindow(Door *door, QWidget *parent) : DoorWindow(parent) {
     setMinimumSize(256, 250);
     setWindowTitle("door parameters");
 
-   QSlider *destSlider = new QSlider(Qt::Horizontal, this);
-   destSlider->resize(250, 32);
-   destSlider->setMinimum(0);
-   destSlider->setMaximum(64);
-   destSlider->move(0, 15);
-   destSlider->setValue(door->getDest());
-   QLabel *destLabel = new QLabel(tr("dest"), this);
+    validator = new QIntValidator();
+    //destination level --------------------------------------------------------
+   QLineEdit *levelBox = new QLineEdit(this);
+   levelBox->setPlaceholderText(QString::number(door->getDest()));
+    levelBox->move(32, 32);
+    QLabel *levelLabel = new QLabel(tr("Destination Level"), this);
+    levelLabel->move(32, 16);
+    levelBox->setValidator(validator);
+    connect(levelBox, SIGNAL(textChanged(const QString &)), this, SLOT(setDest(const QString &)));
 
+   //destination x coord --------------------------------------------------------
 
-   connect(destSlider, SIGNAL(valueChanged(int)), this, SLOT(setDest(int)));
+   QLineEdit *xBox = new QLineEdit(this);
+    xBox->move(32, 72);
+    QLabel *xLabel = new QLabel(tr("Destination X"), this);
+    xBox->setPlaceholderText(QString::number(door->getDestX()));
+    xLabel->move(32, 56);
+    xBox->setValidator(validator);
+   connect(xBox, SIGNAL(textChanged(const QString &)), this, SLOT(setDestX(const QString &)));
 
+    //destination y coord --------------------------------------------------------------
+   QLineEdit *yBox = new QLineEdit(this);
+   yBox->move(32, 112);
+   yBox->setPlaceholderText(QString::number(door->getDestY()));
+   QLabel *yLabel = new QLabel(tr("Destination Y"), this);
+   yLabel->move(32, 96);
+    yBox->setValidator(validator);
+   connect(yBox, SIGNAL(textChanged(const QString &)), this, SLOT(setDestY(const QString &)));
 
-   QSlider *destXSlider = new QSlider(Qt::Horizontal, this);
-   destXSlider->resize(250, 32);
-   destXSlider->setMinimum(0);
-   destXSlider->setMaximum(20000);
-   destXSlider->move(0, 45);
-    destXSlider->setValue(door->getDestX());
-   QLabel *destXLabel = new QLabel(tr("destX"), this);
-    destXLabel->move(0,40);
-
-   connect(destXSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestX(int)));
-
-
-
-   QSlider *destYSlider = new QSlider(Qt::Horizontal, this);
-   destYSlider->resize(250, 32);
-   destYSlider->setMinimum(0);
-   destYSlider->setMaximum(20000);
-   destYSlider->move(0, 75);
-    destYSlider->setValue(door->getDestY());
-   QLabel *destYLabel = new QLabel(tr("destY"), this);
-   destYLabel->move(0,70);
-
-   connect(destYSlider, SIGNAL(valueChanged(int)), this, SLOT(setDestY(int)));
-
-
+    //locked? --------------------------------------------------------------------------
    QCheckBox *isLocked = new QCheckBox(this);
-   isLocked->move(0, 100);
+   isLocked->move(32, 152);
    isLocked->setChecked(door->getLocked());
+   QLabel *lockedLabel = new QLabel(tr("Locked Door"), this);
+   lockedLabel->move(64,152);
 
    connect(isLocked, SIGNAL(stateChanged(int)), this, SLOT(toggleLocked()));
 
@@ -84,26 +81,26 @@ void DoorWindow::toggleLocked()
 }
 
 
-void DoorWindow::setDest(int dest)
+void DoorWindow::setDest(const QString &dest)
 {
-     door->setDest(dest);
+     door->setDest(dest.toInt());
 
     QPoint point(0, 0);
-    QToolTip::showText(this->mapToGlobal(point), QString::number(dest), this);
+    QToolTip::showText(this->mapToGlobal(point), dest, this);
 }
 
-void DoorWindow::setDestX(int destX)
+void DoorWindow::setDestX(const QString &destX)
 {
-     door->setDestX(destX);
+     door->setDestX(destX.toInt());
 
     QPoint point(0, 0);
-    QToolTip::showText(this->mapToGlobal(point), QString::number(destX), this);
+    QToolTip::showText(this->mapToGlobal(point), destX, this);
 }
 
-void DoorWindow::setDestY(int destY)
+void DoorWindow::setDestY(const QString &destY)
 {
-     door->setDestY(destY);
+     door->setDestY(destY.toInt());
 
     QPoint point(0, 0);
-    QToolTip::showText(this->mapToGlobal(point), QString::number(destY), this);
+    QToolTip::showText(this->mapToGlobal(point), destY, this);
 }
