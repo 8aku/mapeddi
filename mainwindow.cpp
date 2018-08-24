@@ -122,7 +122,7 @@ void MainWindow::open()
                 }
                 else if (currentType == 5)
                 {
-                    if (input[3] < 8 && input[3] >= 0)
+                    if (input[3] < 10 && input[3] >= 0)
                         worldView->addMonster(input[1], input[2], input[3], input[4]);
 
                     input += 5;
@@ -259,7 +259,7 @@ void MainWindow::save()
         }
         for (auto monster : worldView->monsters_list)
         {
-            if (monster->getType() <= 7) {
+            if (monster->getType() <= 10) {
                 out << (int)5;
                 out << monster->getX();
                 out << monster->getY();
