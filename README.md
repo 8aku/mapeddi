@@ -1,2 +1,2 @@
 # mapeddi
-Map Editor.
+Map Editor made using QtCreator.
